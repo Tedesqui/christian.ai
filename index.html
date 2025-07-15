@@ -4,28 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IA Cristã - Um Diálogo de Fé</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; overflow: hidden; }
         .custom-scrollbar::-webkit-scrollbar { width: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        #chat-window {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)), url('images/heaven.jpeg');
-            background-size: cover;
-            background-position: center;
-        }
+        #chat-window { background-image: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)), url('images/heaven.jpeg'); background-size: cover; background-position: center; }
         #user-input { caret-color: #2563eb; }
         .hidden { display: none; }
+        .recording { animation: pulse 1.2s infinite; background-color: #dc2626 !important; }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+        }
     </style>
 </head>
+
 <body class="bg-slate-100 flex items-center justify-center min-h-screen">
+
     <div class="flex flex-col w-full max-w-3xl h-[85vh] bg-white rounded-2xl shadow-2xl m-4" style="transform: translateY(-10%);">
         <header class="bg-blue-600 text-white p-6 rounded-t-2xl shadow-md flex items-center space-x-4">
             <img src="images/jesus.jpg" alt="Imagem de Jesus Cristo" class="h-20 w-20 rounded-full object-cover border-2 border-white">
@@ -38,7 +38,7 @@
         <main id="chat-window" class="flex-1 p-6 overflow-y-auto custom-scrollbar">
             <div class="message-ai mb-4 flex">
                 <div class="bg-slate-200 text-slate-800 rounded-lg rounded-bl-none p-3 max-w-lg">
-                    <p class="text-sm">Paz do Senhor! Eu sou o seu assistente virtual cristão. Estou aqui para te ajudar a aprofundar-se na Palavra de Deus. Sinta-se à vontade para perguntar sobre versículos, personagens bíblicos, ou para conversarmos sobre os desafios da vida sob a ótica cristã.</p>
+                    <p class="text-sm">Paz do Senhor! Eu sou o seu assistente virtual cristão. Estou aqui para ajudar você a se aprofundar na Palavra de Deus. Pergunte sobre versículos, personagens bíblicos ou desafios da vida sob a ótica cristã.</p>
                 </div>
             </div>
         </main>
@@ -50,8 +50,10 @@
                     <button id="send-button" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-colors duration-300 ml-2.5 hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" /></svg>
                     </button>
-                    <button id="mic-button" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-colors duration-300 ml-2.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd" /></svg>
+                    <button id="mic-button" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-all duration-300 ml-2.5">
+                        <svg id="mic-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd"/>
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -63,6 +65,7 @@
         const userInput = document.getElementById('user-input');
         const sendButton = document.getElementById('send-button');
         const micButton = document.getElementById('mic-button');
+        const micIcon = document.getElementById('mic-icon');
 
         userInput.addEventListener('input', () => {
             if (userInput.value.trim() !== '') {
@@ -84,73 +87,64 @@
             }
             showTypingIndicator();
             try {
-                const backendUrl = '/api/ask-christian-ai';
-                const response = await fetch(backendUrl, {
+                const response = await fetch('/api/ask-christian-ai', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ question: message })
                 });
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(`Erro no servidor: ${response.status} - ${errorData.error}`);
-                }
+                if (!response.ok) throw new Error();
                 const data = await response.json();
-                const aiMessage = data.answer;
                 removeTypingIndicator();
-                appendMessage(aiMessage, 'ai');
-            } catch (error) {
-                console.error("Erro:", error);
+                appendMessage(data.answer, 'ai');
+            } catch {
                 removeTypingIndicator();
-                appendMessage("Ocorreu um erro. Tente novamente mais tarde.", 'ai');
+                appendMessage("Perdão, minha ovelha, ocorreu um erro ao tentar conectar com meus circuitos espirituais. Tente novamente mais tarde.", 'ai');
             }
         }
 
         sendButton.addEventListener('click', () => sendMessage());
 
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognitionActive = false;
         if (SpeechRecognition) {
             const recognition = new SpeechRecognition();
             recognition.lang = 'pt-BR';
             recognition.interimResults = false;
 
-            function startRecognition() {
-                try {
-                    recognition.start();
-                    appendMessage("🎙️ Aguardando...", "system");
-                } catch (e) {
-                    console.error("Erro ao iniciar:", e);
-                }
-            }
-            function stopRecognition() {
-                try {
-                    recognition.stop();
-                } catch (e) {
-                    console.error("Erro ao parar:", e);
-                }
-            }
+            micButton.addEventListener('mousedown', () => {
+                if (recognitionActive) return;
+                recognitionActive = true;
+                micButton.classList.add('recording');
+                micIcon.innerHTML = '<path fill-rule="evenodd" d="M6 8a4 4 0 118 0v2a4 4 0 11-8 0V8zm8 4.874A6.003 6.003 0 004 10a1 1 0 10-2 0c0 3.866 3.582 7 8 7s8-3.134 8-7a1 1 0 10-2 0c0 1.383-.776 2.635-2 3.289V17h-4v-4.126z" clip-rule="evenodd"/>';
+                recognition.start();
+                appendMessage("🎙️ Gravando...", "system");
+            });
 
-            micButton.addEventListener('mousedown', startRecognition);
-            micButton.addEventListener('mouseup', stopRecognition);
-            micButton.addEventListener('touchstart', startRecognition);
-            micButton.addEventListener('touchend', stopRecognition);
+            micButton.addEventListener('mouseup', () => {
+                if (!recognitionActive) return;
+                recognitionActive = false;
+                micButton.classList.remove('recording');
+                micIcon.innerHTML = '<path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd"/>';
+                recognition.stop();
+            });
+
+            micButton.addEventListener('touchstart', (e) => { e.preventDefault(); micButton.dispatchEvent(new Event('mousedown')); });
+            micButton.addEventListener('touchend', (e) => { e.preventDefault(); micButton.dispatchEvent(new Event('mouseup')); });
 
             recognition.onresult = (event) => {
                 const transcript = event.results[0][0].transcript;
                 removeSystemMessage();
-                if (transcript) {
-                    sendMessage(transcript);
-                }
+                if (transcript) sendMessage(transcript);
             };
 
             recognition.onerror = (event) => {
-                console.error("Erro:", event.error);
+                console.error(event.error);
+                let errorMessage = "Erro no reconhecimento de voz.";
+                if (event.error === 'not-allowed') {
+                    errorMessage = "Permissão de microfone negada.";
+                }
                 removeSystemMessage();
-                appendMessage("🎙️ Não foi possível reconhecer sua voz. Tente novamente.", "system-error");
-            };
-
-            recognition.onspeechend = () => {
-                stopRecognition();
-                removeSystemMessage();
+                appendMessage(errorMessage, "system-error");
             };
         } else {
             micButton.style.display = 'none';
@@ -168,9 +162,7 @@
             } else if (sender === 'system' || sender === 'system-error') {
                 messageWrapper.id = 'system-message';
                 messageWrapper.className = 'message-system mb-4 flex justify-center';
-                messageBubble.className = sender === 'system-error'
-                    ? 'bg-red-100 text-red-700 rounded-lg p-2 text-xs'
-                    : 'bg-yellow-100 text-yellow-700 rounded-lg p-2 text-xs';
+                messageBubble.className = sender === 'system-error' ? 'bg-red-100 text-red-700 rounded-lg p-2 text-xs' : 'bg-yellow-100 text-yellow-700 rounded-lg p-2 text-xs';
             }
             messageBubble.innerHTML = `<p class="text-sm">${message.replace(/\n/g, '<br>')}</p>`;
             messageWrapper.appendChild(messageBubble);
@@ -184,17 +176,17 @@
         }
 
         function showTypingIndicator() {
-            const typingIndicator = `<div id="typing-indicator" class="message-ai mb-4 flex">
-                <div class="bg-slate-200 text-slate-800 rounded-lg rounded-bl-none p-3 max-w-lg">
-                    <div class="flex items-center space-x-1">
-                        <span class="text-sm">A meditar na Palavra</span>
-                        <div class="h-2 w-2 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                        <div class="h-2 w-2 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                        <div class="h-2 w-2 bg-slate-400 rounded-full animate-bounce"></div>
+            chatWindow.insertAdjacentHTML('beforeend',
+                `<div id="typing-indicator" class="message-ai mb-4 flex">
+                    <div class="bg-slate-200 text-slate-800 rounded-lg rounded-bl-none p-3 max-w-lg">
+                        <div class="flex items-center space-x-1">
+                            <span class="text-sm">A meditar na Palavra</span>
+                            <div class="h-2 w-2 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                            <div class="h-2 w-2 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                            <div class="h-2 w-2 bg-slate-400 rounded-full animate-bounce"></div>
+                        </div>
                     </div>
-                </div>
-            </div>`;
-            chatWindow.insertAdjacentHTML('beforeend', typingIndicator);
+                </div>`);
             chatWindow.scrollTop = chatWindow.scrollHeight;
         }
 
@@ -210,7 +202,9 @@
             }
         });
 
-        window.addEventListener('load', () => userInput.focus());
+        window.addEventListener('load', () => {
+            userInput.focus();
+        });
     </script>
 </body>
 </html>
