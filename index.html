@@ -51,7 +51,7 @@
         <main id="chat-window" class="flex-1 p-6 overflow-y-auto">
             <div class="message-ai mb-4 flex">
                 <div class="bg-slate-200 text-slate-800 rounded-lg rounded-bl-none p-3 max-w-lg">
-                    <p class="text-sm">Paz do Senhor! Eu sou o seu assistente virtual cristão. Estou aqui para o ajudar a aprofundar-se na Palavra de Deus. Sinta-se à vontade para perguntar sobre versículos, personagens bíblicos, ou para conversarmos sobre os desafios da vida sob uma ótica cristã.</p>
+                    <p class="text-sm">Paz do Senhor! Eu sou o seu assistente virtual cristão. Estou aqui para te ajudar a aprofundar-se na Palavra de Deus. Sinta-se à vontade para perguntar sobre versículos, personagens bíblicos, ou para conversarmos sobre os desafios da vida sob a ótica cristã.</p>
                 </div>
             </div>
         </main>
@@ -61,14 +61,14 @@
                 <div class="flex items-center bg-slate-100 rounded-full p-1.5">
                     <input type="text" id="user-input" placeholder="Escreva a sua mensagem..." class="flex-1 bg-transparent border-none focus:ring-0 text-slate-800 placeholder-slate-400 px-4">
                     <button id="send-button" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-colors duration-300 ml-2.5 hidden">
-                        <svg xmlns="http://www.w3.org/2000/svg" id="send-icon" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
                         </svg>
                     </button>
 
                     <button id="mic-button" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-colors duration-300 ml-2.5">
                         <svg xmlns="http://www.w3.org/2000/svg" id="mic-icon" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd"/>
                         </svg>
                     </button>
                 </div>
@@ -81,7 +81,6 @@
         const userInput = document.getElementById('user-input');
         const sendButton = document.getElementById('send-button');
         const micButton = document.getElementById('mic-button');
-        const micIcon = document.getElementById('mic-icon');
 
         userInput.addEventListener('input', () => {
             if (userInput.value.trim() !== '') {
@@ -125,7 +124,7 @@
             } catch (error) {
                 console.error("Erro ao comunicar com o backend:", error);
                 removeTypingIndicator();
-                appendMessage("Peço desculpa, ocorreu um erro ao tentar conectar-me com os meus circuitos espirituais. Por favor, tente novamente mais tarde.", 'ai');
+                appendMessage("Perdão, minha ovelha, ocorreu um erro ao tentar conectar-me com os meus circuitos espirituais. Por favor, tente novamente mais tarde.", 'ai');
             }
         }
 
@@ -144,7 +143,6 @@
                 recognitionActive = true;
                 micButton.classList.add('recording');
                 if (navigator.vibrate) navigator.vibrate(50);
-                micIcon.innerHTML = '<path fill-rule="evenodd" d="M6 8a4 4 0 118 0v2a4 4 0 11-8 0V8zm8 4.874A6.003 6.003 0 004 10a1 1 0 10-2 0c0 3.866 3.582 7 8 7s8-3.134 8-7a1 1 0 10-2 0c0 1.383-.776 2.635-2 3.289V17h-4v-4.126z" clip-rule="evenodd"/>';
                 recognition.start();
                 appendMessage("🎙️ Gravando...", "system");
             });
@@ -153,8 +151,8 @@
                 if (!recognitionActive) return;
                 recognitionActive = false;
                 micButton.classList.remove('recording');
-                micIcon.innerHTML = '<path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd"/>';
                 recognition.stop();
+                removeSystemMessage();
             });
 
             micButton.addEventListener('touchstart', (e) => { e.preventDefault(); micButton.dispatchEvent(new Event('mousedown')); });
@@ -162,7 +160,6 @@
 
             recognition.onresult = (event) => {
                 const transcript = event.results[0][0].transcript;
-                removeSystemMessage();
                 if (transcript) {
                     sendMessage(transcript);
                 }
@@ -237,4 +234,5 @@
         });
     </script>
 </body>
+
 </html>
