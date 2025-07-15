@@ -55,25 +55,7 @@
             z-index: -1;
         }
 
-        .recording::before {
-            animation: ripple 0.7s infinite;
-        }
-
-        .recording::after {
-            animation: ripple 0.7s infinite 0.7s;
-        }
-
-        @keyframes ripple {
-            0% {
-                opacity: 0.5;
-                transform: translate(-50%, -50%) scale(1);
-            }
-
-            100% {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(2);
-            }
-        }
+        /* REMOVIDO: animação ripple */
 
         .recording button {
             transform: scale(1.5);
@@ -311,7 +293,9 @@
 
         function removeSystemMessage() {
             const systemMsg = document.getElementById('system-message');
-            if (systemMsg) systemMsg.remove();
+            if (systemMsg) {
+                systemMsg.remove();
+            }
         }
 
         function showTypingIndicator() {
