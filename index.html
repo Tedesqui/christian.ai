@@ -41,6 +41,8 @@
         .mic-wrapper::after {
             content: '';
             position: absolute;
+            width: 120%;
+            height: 120%;
             border-radius: 9999px;
             background-color: rgba(34, 197, 94, 0.4);
             opacity: 0;
@@ -49,22 +51,21 @@
         }
 
         .recording .mic-wrapper::before {
-            animation: ripple 0.7s infinite;
+            animation: ripple 0.5s infinite;
         }
 
         .recording .mic-wrapper::after {
-            animation: ripple 0.7s infinite 0.35s;
+            animation: ripple 0.5s infinite 0.25s;
         }
 
         @keyframes ripple {
             0% {
-                opacity: 0.5;
+                opacity: 0.4;
                 transform: scale(1);
             }
-
             100% {
                 opacity: 0;
-                transform: scale(2.2);
+                transform: scale(2);
             }
         }
 
@@ -269,4 +270,5 @@
         });
     </script>
 </body>
+
 </html>
