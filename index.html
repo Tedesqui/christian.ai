@@ -17,7 +17,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            overflow: hidden; /* Adicionado para bloquear a rolagem da página */
+            overflow: hidden; /* Bloqueia a rolagem da página */
         }
         .custom-scrollbar::-webkit-scrollbar { width: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
@@ -26,20 +26,21 @@
 
         /* Estilo para o wallpaper da caixa de mensagens */
         #chat-window {
-            /* A sobreposição foi tornada 50% mais transparente (de 0.1 para 0.05) para iluminar a imagem */
             background-image: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)), url('images/heaven.jpeg');
             background-size: cover;
             background-position: center;
+        }
+        /* Estilo para a barra de digitação (cursor) que pisca */
+        #user-input {
+            caret-color: #2563eb; /* Define a cor do cursor que pisca */
         }
     </style>
 </head>
 <body class="bg-slate-100 flex items-center justify-center min-h-screen">
 
-    <!-- Adicionado um transform para mover a caixa 10% para cima -->
     <div class="flex flex-col w-full max-w-3xl h-[85vh] bg-white rounded-2xl shadow-2xl m-4" style="transform: translateY(-10%);">
         
         <header class="bg-blue-600 text-white p-6 rounded-t-2xl shadow-md flex items-center space-x-4">
-            <!-- Imagem aumentada em tamanho (de h-16 w-16 para h-20 w-20) -->
             <img src="images/jesus.jpg" alt="Imagem de Jesus Cristo" class="h-20 w-20 rounded-full object-cover border-2 border-white">
             <div>
                 <h1 class="text-2xl font-bold">IA Cristã</h1>
@@ -47,9 +48,7 @@
             </div>
         </header>
 
-        <!-- A classe bg-slate-50 foi removida para aplicar o wallpaper -->
         <main id="chat-window" class="flex-1 p-6 overflow-y-auto custom-scrollbar">
-            <!-- Mensagem inicial da IA -->
             <div class="message-ai mb-4 flex">
                 <div class="bg-slate-200 text-slate-800 rounded-lg rounded-bl-none p-3 max-w-lg">
                     <p class="text-sm">Paz do Senhor! Eu sou o seu assistente virtual cristão. Estou aqui para o ajudar a aprofundar-se na Palavra de Deus. Sinta-se à vontade para perguntar sobre versículos, personagens bíblicos, ou para conversarmos sobre os desafios da vida sob a ótica cristã.</p>
@@ -57,11 +56,8 @@
             </div>
         </main>
 
-        <!-- A borda superior do rodapé foi removida -->
         <footer class="p-2 bg-white rounded-b-2xl">
-            <!-- A largura foi aumentada de w-4/5 (80%) para w-full (100%) -->
             <div class="w-full">
-                <!-- A altura da caixa de mensagem foi diminuída (p-1.5) -->
                 <div class="flex items-center bg-slate-100 rounded-full p-1.5">
                     <input type="text" id="user-input" placeholder="Escreva a sua mensagem..." class="flex-1 bg-transparent border-none focus:ring-0 text-slate-800 placeholder-slate-400 px-4">
                     <button onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-colors duration-300 ml-2.5">
@@ -85,13 +81,11 @@
             showTypingIndicator();
 
             try {
-                // *** CORREÇÃO: O URL aponta para o nosso backend seguro ***
                 const backendUrl = '/api/ask-christian-ai'; 
 
                 const response = await fetch(backendUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    // *** CORREÇÃO: O corpo da mensagem corresponde ao que o backend espera ***
                     body: JSON.stringify({ question: message })
                 });
 
@@ -101,7 +95,6 @@
                 }
 
                 const data = await response.json();
-                // *** CORREÇÃO: A variável da resposta corresponde ao que o backend envia ***
                 const aiMessage = data.answer; 
                 
                 removeTypingIndicator();
@@ -110,7 +103,7 @@
             } catch (error) {
                 console.error("Erro ao comunicar com o backend:", error);
                 removeTypingIndicator();
-                appendMessage("Perdão, querida ovelha, ocorreu um erro ao tentar conectar-me com os meus circuitos espirituais. Por favor, tente novamente mais tarde.", 'ai');
+                appendMessage("Perdão, minha ovelha, ocorreu um erro ao tentar conectar-me com os meus circuitos espirituais. Por favor, tente novamente mais tarde.", 'ai');
             }
         }
         
@@ -146,6 +139,12 @@
                 e.preventDefault(); 
                 sendMessage();
             }
+        });
+
+        // Foca no campo de input automaticamente quando a página carrega,
+        // fazendo com que a barra de digitação apareça a piscar.
+        window.addEventListener('load', () => {
+            userInput.focus();
         });
     </script>
 </body>
