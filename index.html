@@ -30,8 +30,48 @@
             display: none;
         }
 
-        .recording {
-            transform: scale(1.5);
+        .mic-wrapper {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mic-wrapper::before,
+        .mic-wrapper::after {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            border-radius: 9999px;
+            background-color: rgba(34, 197, 94, 0.4);
+            opacity: 0;
+            transform: scale(1);
+            z-index: -1;
+        }
+
+        .recording .mic-wrapper::before {
+            animation: ripple 1s infinite;
+        }
+
+        .recording .mic-wrapper::after {
+            animation: ripple 1s infinite 0.5s;
+        }
+
+        @keyframes ripple {
+            0% {
+                opacity: 0.4;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(2.5);
+            }
+        }
+
+        .recording #mic-button {
+            transform: scale(1.4);
             background-color: #22c55e !important;
             transition: transform 0.2s ease, background-color 0.2s ease;
         }
@@ -66,11 +106,13 @@
                         </svg>
                     </button>
 
-                    <button id="mic-button" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-colors duration-300 ml-2.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" id="mic-icon" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd"/>
-                        </svg>
-                    </button>
+                    <div class="mic-wrapper">
+                        <button id="mic-button" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-colors duration-300 ml-2.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="mic-icon" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </footer>
@@ -81,29 +123,27 @@
         const userInput = document.getElementById('user-input');
         const sendButton = document.getElementById('send-button');
         const micButton = document.getElementById('mic-button');
+        const micWrapper = micButton.parentElement;
 
         userInput.addEventListener('input', () => {
             if (userInput.value.trim() !== '') {
                 sendButton.classList.remove('hidden');
-                micButton.classList.add('hidden');
+                micWrapper.classList.add('hidden');
             } else {
                 sendButton.classList.add('hidden');
-                micButton.classList.remove('hidden');
+                micWrapper.classList.remove('hidden');
             }
         });
 
         async function sendMessage(directMessage = null) {
             const message = directMessage || userInput.value.trim();
             if (!message) return;
-
             appendMessage(message, 'user');
             if (directMessage === null) {
                 userInput.value = '';
                 userInput.dispatchEvent(new Event('input'));
             }
-
             showTypingIndicator();
-
             try {
                 const backendUrl = '/api/ask-christian-ai';
                 const response = await fetch(backendUrl, {
@@ -111,12 +151,10 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ question: message })
                 });
-
                 if (!response.ok) {
                     const errorData = await response.json();
                     throw new Error(`Erro no servidor: ${response.status} - ${errorData.error}`);
                 }
-
                 const data = await response.json();
                 const aiMessage = data.answer;
                 removeTypingIndicator();
@@ -132,7 +170,6 @@
 
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognitionActive = false;
-
         if (SpeechRecognition) {
             const recognition = new SpeechRecognition();
             recognition.lang = 'pt-BR';
@@ -141,7 +178,7 @@
             micButton.addEventListener('mousedown', () => {
                 if (recognitionActive) return;
                 recognitionActive = true;
-                micButton.classList.add('recording');
+                micWrapper.classList.add('recording');
                 if (navigator.vibrate) navigator.vibrate(50);
                 recognition.start();
                 appendMessage("🎙️ Gravando...", "system");
@@ -150,7 +187,7 @@
             micButton.addEventListener('mouseup', () => {
                 if (!recognitionActive) return;
                 recognitionActive = false;
-                micButton.classList.remove('recording');
+                micWrapper.classList.remove('recording');
                 recognition.stop();
                 removeSystemMessage();
             });
@@ -180,7 +217,7 @@
                 removeSystemMessage();
             };
         } else {
-            micButton.style.display = 'none';
+            micWrapper.style.display = 'none';
             console.warn("Reconhecimento de voz não é suportado neste navegador.");
         }
 
@@ -234,5 +271,4 @@
         });
     </script>
 </body>
-
 </html>
