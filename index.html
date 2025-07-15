@@ -26,7 +26,7 @@
         /* Estilo para o wallpaper da caixa de mensagens */
         #chat-window {
             /* A sobreposição foi tornada 50% mais transparente (de 0.2 para 0.1) */
-            background-image: linear-gradient(rgba(0, 0, 0, -3), rgba(0, 0, 0, -3)), url('images/heaven.jpeg');
+            background-image: linear-gradient(rgba(0, 0, 0, -5), rgba(0, 0, 0, -5)), url('images/heaven.jpeg');
             background-size: cover;
             background-position: center;
         }
@@ -57,12 +57,13 @@
         </main>
 
         <footer class="p-4 bg-white border-t border-slate-200 rounded-b-2xl">
-            <!-- A altura da caixa de mensagem foi aumentada (p-3) -->
-            <div class="flex items-center bg-slate-100 rounded-full p-3">
+            <!-- A altura da caixa de mensagem foi aumentada (p-4) -->
+            <div class="flex items-center bg-slate-100 rounded-full p-4">
                 <input type="text" id="user-input" placeholder="Escreva a sua mensagem..." class="flex-1 bg-transparent border-none focus:ring-0 text-slate-800 placeholder-slate-400 px-4">
-                <button onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2 transition-colors duration-300">
-                    <!-- O tamanho do ícone foi diminuído (h-5 w-5) -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" /></svg>
+                <!-- O botão foi movido 10px para a direita (ml-2.5) e o seu padding aumentado (p-2.5) -->
+                <button onclick="sendMessage()" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-colors duration-300 ml-2.5">
+                    <!-- O tamanho do ícone foi aumentado (h-6 w-6) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" /></svg>
                 </button>
             </div>
         </footer>
