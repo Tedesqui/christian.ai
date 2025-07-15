@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,54 +15,61 @@
             font-family: 'Inter', sans-serif;
             overflow: hidden;
         }
+
         #chat-window {
             background-image: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)), url('images/heaven.jpeg');
             background-size: cover;
             background-position: center;
         }
+
         #user-input {
             caret-color: #2563eb;
         }
+
         .hidden {
             display: none;
         }
+
         .mic-wrapper {
             position: relative;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            z-index: 50;
         }
+
         .mic-wrapper::before,
         .mic-wrapper::after {
             content: '';
             position: absolute;
-            width: 200%;
-            height: 200%;
             border-radius: 9999px;
             background-color: rgba(34, 197, 94, 0.4);
             opacity: 0;
             transform: scale(1);
             z-index: -1;
-            pointer-events: none;
         }
-        .mic-wrapper.recording::before {
-            animation: ripple 1.5s infinite;
+
+        .recording .mic-wrapper::before {
+            animation: ripple 0.7s infinite;
         }
-        .mic-wrapper.recording::after {
-            animation: ripple 1.5s infinite 0.75s;
+
+        .recording .mic-wrapper::after {
+            animation: ripple 0.7s infinite 0.35s;
         }
+
         @keyframes ripple {
             0% {
-                opacity: 0.4;
+                opacity: 0.5;
                 transform: scale(1);
             }
             100% {
                 opacity: 0;
-                transform: scale(2.5);
+                transform: scale(2.2);
             }
         }
-        .mic-wrapper.recording #mic-button {
-            transform: scale(1.4);
+
+        .recording button {
+            transform: scale(1.5);
             background-color: #22c55e !important;
             transition: transform 0.2s ease, background-color 0.2s ease;
         }
@@ -96,7 +104,7 @@
                         </svg>
                     </button>
 
-                    <div class="mic-wrapper" id="mic-wrapper">
+                    <div class="mic-wrapper">
                         <button id="mic-button" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-colors duration-300 ml-2.5">
                             <svg xmlns="http://www.w3.org/2000/svg" id="mic-icon" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd"/>
@@ -113,7 +121,7 @@
         const userInput = document.getElementById('user-input');
         const sendButton = document.getElementById('send-button');
         const micButton = document.getElementById('mic-button');
-        const micWrapper = document.getElementById('mic-wrapper');
+        const micWrapper = micButton.parentElement;
 
         userInput.addEventListener('input', () => {
             if (userInput.value.trim() !== '') {
@@ -215,6 +223,7 @@
         function appendMessage(message, sender) {
             const messageWrapper = document.createElement('div');
             const messageBubble = document.createElement('div');
+
             if (sender === 'user') {
                 messageWrapper.className = 'message-user mb-4 flex justify-end';
                 messageBubble.className = 'bg-blue-600 text-white rounded-lg rounded-br-none p-3 max-w-lg';
@@ -226,6 +235,7 @@
                 messageWrapper.className = 'message-system mb-4 flex justify-center';
                 messageBubble.className = sender === 'system-error' ? 'bg-red-100 text-red-700 rounded-lg p-2 text-xs' : 'bg-yellow-100 text-yellow-700 rounded-lg p-2 text-xs';
             }
+
             messageBubble.innerHTML = `<p class="text-sm">${message.replace(/\n/g, '<br>')}</p>`;
             messageWrapper.appendChild(messageBubble);
             chatWindow.appendChild(messageWrapper);
@@ -260,4 +270,5 @@
         });
     </script>
 </body>
+
 </html>
