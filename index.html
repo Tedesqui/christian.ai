@@ -1,99 +1,60 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IA Cristã - Um Diálogo de Fé</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
-
+    
+    <!-- Custom Styles and Font Configuration -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            overflow: hidden;
+            overflow: hidden; /* Esta linha bloqueia a rolagem da página */
         }
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
+        /* Estilo para o wallpaper da caixa de mensagens */
         #chat-window {
             background-image: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)), url('images/heaven.jpeg');
             background-size: cover;
             background-position: center;
-            position: relative;
-            z-index: 40;
         }
-
+        /* Estilo para a barra de digitação (cursor) que pisca */
         #user-input {
-            caret-color: #2563eb;
+            caret-color: #2563eb; /* Define a cor do cursor que pisca */
         }
-
         .hidden {
             display: none;
         }
-
-        .mic-wrapper {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 50;
-        }
-
-        .mic-wrapper::before,
-        .mic-wrapper::after {
-            content: '';
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 9999px;
-            background-color: rgba(34, 197, 94, 0.4);
-            opacity: 0;
-            z-index: -1;
-        }
-
-        /* REMOVIDO: animação ripple */
-
-        .recording button {
-            transform: scale(1.5);
-            background-color: #22c55e !important;
-            transition: transform 0.2s ease, background-color 0.2s ease;
-        }
     </style>
 </head>
-
 <body class="bg-slate-100 flex items-center justify-center min-h-screen">
-    <div class="flex flex-col w-full max-w-3xl h-[85vh] bg-white rounded-2xl shadow-2xl m-4" style="transform: translateY(-10%)">
-        <header
-            class="bg-blue-600 text-white p-6 rounded-t-2xl shadow-md flex items-center space-x-4"
-        >
-            <img
-                src="images/jesus.jpg"
-                alt="Imagem de Jesus Cristo"
-                class="h-20 w-20 rounded-full object-cover border-2 border-white"
-            />
+
+    <div class="flex flex-col w-full max-w-3xl h-[85vh] bg-white rounded-2xl shadow-2xl m-4" style="transform: translateY(-10%);">
+        
+        <header class="bg-blue-600 text-white p-6 rounded-t-2xl shadow-md flex items-center space-x-4">
+            <img src="images/jesus.jpg" alt="Imagem de Jesus Cristo" class="h-20 w-20 rounded-full object-cover border-2 border-white">
             <div>
                 <h1 class="text-2xl font-bold">IA Cristã</h1>
-                <p class="text-sm text-white">
-                    O seu companheiro para reflexão e estudo da Palavra.
-                </p>
+                <p class="text-sm text-white">O seu companheiro para reflexão e estudo da Palavra.</p>
             </div>
         </header>
 
-        <main id="chat-window" class="flex-1 p-6 overflow-y-auto">
+        <main id="chat-window" class="flex-1 p-6 overflow-y-auto custom-scrollbar">
             <div class="message-ai mb-4 flex">
-                <div
-                    class="bg-slate-200 text-slate-800 rounded-lg rounded-bl-none p-3 max-w-lg"
-                >
-                    <p class="text-sm">
-                        Paz do Senhor! Eu sou o seu assistente virtual cristão. Estou aqui para
-                        te ajudar a aprofundar-se na Palavra de Deus. Sinta-se à vontade para
-                        perguntar sobre versículos, personagens bíblicos, ou para conversarmos
-                        sobre os desafios da vida sob a ótica cristã.
-                    </p>
+                <div class="bg-slate-200 text-slate-800 rounded-lg rounded-bl-none p-3 max-w-lg">
+                    <p class="text-sm">Paz do Senhor! Eu sou o seu assistente virtual cristão. Estou aqui para o ajudar a aprofundar-se na Palavra de Deus. Sinta-se à vontade para perguntar sobre versículos, personagens bíblicos, ou para conversarmos sobre os desafios da vida sob uma ótica cristã.</p>
                 </div>
             </div>
         </main>
@@ -101,48 +62,17 @@
         <footer class="p-2 bg-white rounded-b-2xl">
             <div class="w-full">
                 <div class="flex items-center bg-slate-100 rounded-full p-1.5">
-                    <input
-                        type="text"
-                        id="user-input"
-                        placeholder="Fale ou escreva..."
-                        class="flex-1 bg-transparent border-none focus:ring-0 text-slate-800 placeholder-slate-400 px-4"
-                    />
-                    <button
-                        id="send-button"
-                        class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-colors duration-300 ml-2.5 hidden"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-6 w-6"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                        >
-                            <path
-                                d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"
-                            />
-                        </svg>
+                    <input type="text" id="user-input" placeholder="Fale ou escreva..." class="flex-1 bg-transparent border-none focus:ring-0 text-slate-800 placeholder-slate-400 px-4">
+                    
+                    <!-- Botão de Enviar (inicialmente escondido) -->
+                    <button id="send-button" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-colors duration-300 ml-2.5 hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" /></svg>
                     </button>
 
-                    <div class="mic-wrapper">
-                        <button
-                            id="mic-button"
-                            class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-colors duration-300 ml-2.5"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                id="mic-icon"
-                                class="h-6 w-6"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                            >
-                                <path
-                                    fill-rule="evenodd"
-                                    d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z"
-                                    clip-rule="evenodd"
-                                />
-                            </svg>
-                        </button>
-                    </div>
+                    <!-- Botão de Microfone (inicialmente visível) -->
+                    <button id="mic-button" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-colors duration-300 ml-2.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd" /></svg>
+                    </button>
                 </div>
             </div>
         </footer>
@@ -153,36 +83,40 @@
         const userInput = document.getElementById('user-input');
         const sendButton = document.getElementById('send-button');
         const micButton = document.getElementById('mic-button');
-        const micWrapper = micButton.parentElement;
 
+        // Lógica para alternar entre botão de enviar e microfone
         userInput.addEventListener('input', () => {
             if (userInput.value.trim() !== '') {
                 sendButton.classList.remove('hidden');
-                micWrapper.classList.add('hidden');
+                micButton.classList.add('hidden');
             } else {
                 sendButton.classList.add('hidden');
-                micWrapper.classList.remove('hidden');
+                micButton.classList.remove('hidden');
             }
         });
 
+        // Modificado para aceitar um argumento opcional
         async function sendMessage(directMessage = null) {
             const message = directMessage || userInput.value.trim();
             if (!message) return;
 
             appendMessage(message, 'user');
+            
+            // Limpa o input apenas se a mensagem veio da caixa de texto
             if (directMessage === null) {
                 userInput.value = '';
-                userInput.dispatchEvent(new Event('input'));
+                userInput.dispatchEvent(new Event('input')); // Esconde o botão de enviar
             }
-
+            
             showTypingIndicator();
 
             try {
-                const backendUrl = '/api/ask-christian-ai';
+                const backendUrl = '/api/ask-christian-ai'; 
+
                 const response = await fetch(backendUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ question: message }),
+                    body: JSON.stringify({ question: message })
                 });
 
                 if (!response.ok) {
@@ -191,85 +125,74 @@
                 }
 
                 const data = await response.json();
-                const aiMessage = data.answer;
+                const aiMessage = data.answer; 
+                
                 removeTypingIndicator();
                 appendMessage(aiMessage, 'ai');
+
             } catch (error) {
-                console.error('Erro ao comunicar com o backend:', error);
+                console.error("Erro ao comunicar com o backend:", error);
                 removeTypingIndicator();
-                appendMessage(
-                    'Perdão, minha ovelha, ocorreu um erro ao tentar conectar-me com os meus circuitos espirituais. Por favor, tente novamente mais tarde.',
-                    'ai'
-                );
+                appendMessage("Perdão, minha ovelha, ocorreu um erro ao tentar conectar-me com os meus circuitos espirituais. Por favor, tente novamente mais tarde.", 'ai');
             }
         }
 
         sendButton.addEventListener('click', () => sendMessage());
 
+        // Lógica de Reconhecimento de Voz
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        let recognitionActive = false;
-
         if (SpeechRecognition) {
             const recognition = new SpeechRecognition();
             recognition.lang = 'pt-BR';
             recognition.interimResults = false;
 
             micButton.addEventListener('mousedown', () => {
-                if (recognitionActive) return;
-                recognitionActive = true;
-                micWrapper.classList.add('recording');
-                if (navigator.vibrate) navigator.vibrate(50);
-                recognition.start();
-                appendMessage('🎙️ Gravando...', 'system');
+                try {
+                    recognition.start();
+                    appendMessage("🎙️ Gravando...", "system");
+                } catch(e) {
+                    console.error("Erro ao iniciar o reconhecimento de voz:", e);
+                    appendMessage("Não foi possível iniciar o reconhecimento de voz.", "system-error");
+                }
             });
 
             micButton.addEventListener('mouseup', () => {
-                if (!recognitionActive) return;
-                recognitionActive = false;
-                micWrapper.classList.remove('recording');
                 recognition.stop();
-                removeSystemMessage();
             });
 
-            micButton.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                micButton.dispatchEvent(new Event('mousedown'));
-            });
-            micButton.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                micButton.dispatchEvent(new Event('mouseup'));
-            });
-
+            // Modificado para enviar a mensagem automaticamente
             recognition.onresult = (event) => {
                 const transcript = event.results[0][0].transcript;
+                removeSystemMessage();
                 if (transcript) {
-                    sendMessage(transcript);
+                    sendMessage(transcript); // Envia a transcrição diretamente
                 }
             };
 
             recognition.onerror = (event) => {
-                console.error('Erro no reconhecimento de voz:', event.error);
-                let errorMessage = 'Ocorreu um erro no reconhecimento de voz.';
+                console.error("Erro no reconhecimento de voz:", event.error);
+                let errorMessage = "Ocorreu um erro no reconhecimento de voz.";
                 if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
-                    errorMessage = 'Permissão para o microfone negada. Por favor, ative nas definições do seu navegador.';
+                    errorMessage = "Permissão para o microfone negada. Por favor, ative nas definições do seu navegador.";
                 }
                 removeSystemMessage();
-                appendMessage(errorMessage, 'system-error');
+                appendMessage(errorMessage, "system-error");
             };
-
+            
             recognition.onspeechend = () => {
                 recognition.stop();
                 removeSystemMessage();
             };
-        } else {
-            micWrapper.style.display = 'none';
-            console.warn('Reconhecimento de voz não é suportado neste navegador.');
-        }
 
+        } else {
+            micButton.style.display = 'none';
+            console.warn("Reconhecimento de voz não é suportado neste navegador.");
+        }
+        
         function appendMessage(message, sender) {
             const messageWrapper = document.createElement('div');
             const messageBubble = document.createElement('div');
-
+            
             if (sender === 'user') {
                 messageWrapper.className = 'message-user mb-4 flex justify-end';
                 messageBubble.className = 'bg-blue-600 text-white rounded-lg rounded-br-none p-3 max-w-lg';
@@ -279,10 +202,7 @@
             } else if (sender === 'system' || sender === 'system-error') {
                 messageWrapper.id = 'system-message';
                 messageWrapper.className = 'message-system mb-4 flex justify-center';
-                messageBubble.className =
-                    sender === 'system-error'
-                        ? 'bg-red-100 text-red-700 rounded-lg p-2 text-xs'
-                        : 'bg-yellow-100 text-yellow-700 rounded-lg p-2 text-xs';
+                messageBubble.className = sender === 'system-error' ? 'bg-red-100 text-red-700 rounded-lg p-2 text-xs' : 'bg-yellow-100 text-yellow-700 rounded-lg p-2 text-xs';
             }
 
             messageBubble.innerHTML = `<p class="text-sm">${message.replace(/\n/g, '<br>')}</p>`;
@@ -293,9 +213,7 @@
 
         function removeSystemMessage() {
             const systemMsg = document.getElementById('system-message');
-            if (systemMsg) {
-                systemMsg.remove();
-            }
+            if (systemMsg) systemMsg.remove();
         }
 
         function showTypingIndicator() {
@@ -306,14 +224,12 @@
 
         function removeTypingIndicator() {
             const indicator = document.getElementById('typing-indicator');
-            if (indicator) {
-                indicator.remove();
-            }
+            if (indicator) { indicator.remove(); }
         }
 
         userInput.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
-                e.preventDefault();
+                e.preventDefault(); 
                 sendMessage();
             }
         });
@@ -323,5 +239,4 @@
         });
     </script>
 </body>
-
 </html>
