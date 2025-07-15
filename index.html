@@ -42,34 +42,35 @@
         }
 
         /* Animação de ondulações ao redor do botão mic */
-        .mic-wrapper {
+       .mic-wrapper {
             position: relative;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            z-index: 10; /* para ficar acima do chat */
+            z-index: 50;
         }
 
         .mic-wrapper::before,
         .mic-wrapper::after {
             content: '';
             position: absolute;
+            width: 100px;
+            height: 100px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             border-radius: 9999px;
             background-color: rgba(34, 197, 94, 0.4);
             opacity: 0;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
             z-index: -1;
         }
 
-        .mic-wrapper.recording::before {
-            animation: ripple 1.05s infinite;
+        .recording::before {
+            animation: ripple 0.7s infinite;
         }
 
-        .mic-wrapper.recording::after {
-            animation: ripple 1.05s infinite 0.525s;
+        .recording::after {
+            animation: ripple 0.7s infinite 0.7s;
         }
 
         @keyframes ripple {
