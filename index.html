@@ -95,65 +95,19 @@
             }
         });
 
-        sendButton.addEventListener('click', sendMessage);
-
-        // Lógica de Reconhecimento de Voz
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (SpeechRecognition) {
-            const recognition = new SpeechRecognition();
-            recognition.lang = 'pt-BR';
-            recognition.interimResults = false;
-
-            micButton.addEventListener('mousedown', () => {
-                try {
-                    recognition.start();
-                    appendMessage("A ouvir...", "system");
-                } catch(e) {
-                    console.error("Erro ao iniciar o reconhecimento de voz:", e);
-                    appendMessage("Não foi possível iniciar o reconhecimento de voz.", "system-error");
-                }
-            });
-
-            micButton.addEventListener('mouseup', () => {
-                recognition.stop();
-            });
-
-            recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript;
-                userInput.value = transcript;
-                // Dispara o evento de input para mostrar o botão de enviar
-                userInput.dispatchEvent(new Event('input'));
-                removeSystemMessage();
-            };
-
-            recognition.onerror = (event) => {
-                console.error("Erro no reconhecimento de voz:", event.error);
-                let errorMessage = "Ocorreu um erro no reconhecimento de voz.";
-                if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
-                    errorMessage = "Permissão para o microfone negada. Por favor, ative nas definições do seu navegador.";
-                }
-                removeSystemMessage();
-                appendMessage(errorMessage, "system-error");
-            };
-            
-            recognition.onspeechend = () => {
-                recognition.stop();
-                removeSystemMessage();
-            };
-
-        } else {
-            micButton.style.display = 'none';
-            console.warn("Reconhecimento de voz não é suportado neste navegador.");
-        }
-
-
-        async function sendMessage() {
-            const message = userInput.value.trim();
+        // Modificado para aceitar um argumento opcional
+        async function sendMessage(directMessage = null) {
+            const message = directMessage || userInput.value.trim();
             if (!message) return;
 
             appendMessage(message, 'user');
-            userInput.value = '';
-            userInput.dispatchEvent(new Event('input')); // Esconde o botão de enviar
+            
+            // Limpa o input apenas se a mensagem veio da caixa de texto
+            if (directMessage === null) {
+                userInput.value = '';
+                userInput.dispatchEvent(new Event('input')); // Esconde o botão de enviar
+            }
+            
             showTypingIndicator();
 
             try {
@@ -181,6 +135,58 @@
                 removeTypingIndicator();
                 appendMessage("Perdão, minha ovelha, ocorreu um erro ao tentar conectar-me com os meus circuitos espirituais. Por favor, tente novamente mais tarde.", 'ai');
             }
+        }
+
+        sendButton.addEventListener('click', () => sendMessage());
+
+        // Lógica de Reconhecimento de Voz
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'pt-BR';
+            recognition.interimResults = false;
+
+            micButton.addEventListener('mousedown', () => {
+                try {
+                    recognition.start();
+                    appendMessage("A ouvir...", "system");
+                } catch(e) {
+                    console.error("Erro ao iniciar o reconhecimento de voz:", e);
+                    appendMessage("Não foi possível iniciar o reconhecimento de voz.", "system-error");
+                }
+            });
+
+            micButton.addEventListener('mouseup', () => {
+                recognition.stop();
+            });
+
+            // Modificado para enviar a mensagem automaticamente
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                removeSystemMessage();
+                if (transcript) {
+                    sendMessage(transcript); // Envia a transcrição diretamente
+                }
+            };
+
+            recognition.onerror = (event) => {
+                console.error("Erro no reconhecimento de voz:", event.error);
+                let errorMessage = "Ocorreu um erro no reconhecimento de voz.";
+                if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+                    errorMessage = "Permissão para o microfone negada. Por favor, ative nas definições do seu navegador.";
+                }
+                removeSystemMessage();
+                appendMessage(errorMessage, "system-error");
+            };
+            
+            recognition.onspeechend = () => {
+                recognition.stop();
+                removeSystemMessage();
+            };
+
+        } else {
+            micButton.style.display = 'none';
+            console.warn("Reconhecimento de voz não é suportado neste navegador.");
         }
         
         function appendMessage(message, sender) {
