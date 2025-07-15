@@ -58,8 +58,8 @@
         </main>
 
         <footer class="p-2 bg-white border-t border-slate-200 rounded-b-2xl">
-            <!-- Wrapper para controlar a largura da caixa de mensagem -->
-            <div class="w-4/5 mx-auto">
+            <!-- A largura foi aumentada de w-4/5 (80%) para w-full (100%) -->
+            <div class="w-full">
                 <!-- A altura da caixa de mensagem foi diminuída (p-1.5) -->
                 <div class="flex items-center bg-slate-100 rounded-full p-1.5">
                     <input type="text" id="user-input" placeholder="Escreva a sua mensagem..." class="flex-1 bg-transparent border-none focus:ring-0 text-slate-800 placeholder-slate-400 px-4">
@@ -145,4 +145,7 @@
                 e.preventDefault(); 
                 sendMessage();
             }
-   
+        });
+    </script>
+</body>
+</html>
