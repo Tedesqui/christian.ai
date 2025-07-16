@@ -12,16 +12,19 @@
  * variável de ambiente chamada `OPENAI_API_KEY` com o valor da sua chave.
  */
 
-    <script src="https://js.puter.com/v2/"></script>
-    <script>
-        // Using gpt-4.1 model
-        puter.ai.chat(
-            "Write a short poem about coding",
-            { model: "gpt-4.1" }
-        ).then(response => {
-            puter.print("<h2>Using gpt-4.1 model</h2>");
-            puter.print(response);
-        });
+    /*
+ * FICHEIRO: /api/ask-christian-ai.js
+ *
+ * DESCRIÇÃO:
+ * Este é o endpoint do backend que recebe a pergunta do frontend,
+ * adiciona o prompt de sistema para definir a persona da IA,
+ * e comunica de forma segura com a API da OpenAI.
+ *
+ * COMO CONFIGURAR:
+ * 1. Crie uma chave de API na sua conta da OpenAI.
+ * 2. Na sua plataforma de alojamento (Vercel, Netlify, etc.), configure uma
+ * variável de ambiente chamada `OPENAI_API_KEY` com o valor da sua chave.
+ */
 
 export default async function handler(req, res) {
     // Apenas permite pedidos POST
