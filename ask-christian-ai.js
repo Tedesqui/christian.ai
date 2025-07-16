@@ -12,13 +12,6 @@
  * variável de ambiente chamada `OPENAI_API_KEY` com o valor da sua chave.
  */
 
-import ModelClient, { isUnexpected } from "@azure-rest/ai-inference";
-import { AzureKeyCredential } from "@azure/core-auth";
-
-const token = "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";
-const endpoint = "https://models.github.ai/inference";
-const model = "openai/gpt-4.1";
-
 export default async function handler(req, res) {
     // Apenas permite pedidos POST
     if (req.method !== 'POST') {
@@ -31,6 +24,9 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: 'Nenhuma pergunta fornecida.' });
         }
 
+        const apiKey = process.env.OPENAI_API_KEY;
+        const apiUrl = 'https://api.openai.com/v1/chat/completions';
+
         // Este é o "prompt de sistema" que define a personalidade e o conhecimento da IA.
         const systemPrompt = `
             Você é um conselheiro cristão compassivo, sábio e erudito. 
@@ -42,7 +38,7 @@ export default async function handler(req, res) {
         `;
 
         const payload = {
-            model: "gpt-4.1", // Pode usar "gpt-3.5-turbo" para uma opção mais económica
+            model: "gpt-4o", // Pode usar "gpt-3.5-turbo" para uma opção mais económica
             messages: [
                 {
                     role: "system",
