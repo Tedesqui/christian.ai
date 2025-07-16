@@ -11,6 +11,7 @@
  * 2. Na sua plataforma de alojamento (Vercel, Netlify, etc.), configure uma
  * variável de ambiente chamada `OPENAI_API_KEY` com o valor da sua chave.
  */
+import OpenAI from  "openai";
 
 export default async function handler(req, res) {
     // Apenas permite pedidos POST
