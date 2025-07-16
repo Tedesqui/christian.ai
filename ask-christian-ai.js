@@ -1,17 +1,3 @@
-/*
- * FICHEIRO: /api/ask-christian-ai.js
- *
- * DESCRIÇÃO:
- * Este é o endpoint do backend que recebe a pergunta do frontend,
- * adiciona o prompt de sistema para definir a persona da IA,
- * e comunica de forma segura com a API da OpenAI.
- *
- * COMO CONFIGURAR:
- * 1. Crie uma chave de API na sua conta da OpenAI.
- * 2. Na sua plataforma de alojamento (Vercel, Netlify, etc.), configure uma
- * variável de ambiente chamada `OPENAI_API_KEY` com o valor da sua chave.
- */
-
 export default async function handler(req, res) {
     // Apenas permite pedidos POST
     if (req.method !== 'POST') {
@@ -24,8 +10,19 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: 'Nenhuma pergunta fornecida.' });
         }
 
-        const apiKey = process.env.OPENAI_API_KEY;
-        const apiUrl = 'https://api.openai.com/v1/chat/completions';
+        // Recupera as variáveis de ambiente específicas do Azure
+        const azureEndpoint = process.env.AZURE_OPENAI_ENDPOINT;
+        const azureApiKey = process.env.AZURE_OPENAI_API_KEY;
+        const deploymentName = process.env.AZURE_OPENAI_DEPLOYMENT_NAME;
+        const apiVersion = process.env.AZURE_OPENAI_API_VERSION;
+
+        if (!azureEndpoint || !azureApiKey || !deploymentName || !apiVersion) {
+            console.error("Variáveis de ambiente do Azure não estão configuradas corretamente.");
+            return res.status(500).json({ error: 'Configuração do servidor incompleta.' });
+        }
+
+        // Constrói a URL da API para o Azure OpenAI
+        const apiUrl = `${azureEndpoint}/openai/deployments/${deploymentName}/chat/completions?api-version=${apiVersion}`;
 
         // Este é o "prompt de sistema" que define a personalidade e o conhecimento da IA.
         const systemPrompt = `
@@ -37,8 +34,8 @@ export default async function handler(req, res) {
             Comece sempre as suas respostas com uma saudação calorosa como "Paz seja consigo," ou "Amado(a) irmão(ã) em Cristo,".
         `;
 
+        // O payload para o Azure não precisa do campo "model", pois ele já está na URL
         const payload = {
-            model: "gpt-4o", // Pode usar "gpt-3.5-turbo" para uma opção mais económica
             messages: [
                 {
                     role: "system",
@@ -55,15 +52,16 @@ export default async function handler(req, res) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
+                // O Azure usa 'api-key' no cabeçalho em vez de 'Authorization'
+                'api-key': azureApiKey
             },
             body: JSON.stringify(payload),
         });
 
         if (!apiResponse.ok) {
             const errorBody = await apiResponse.json();
-            console.error("Erro da API da OpenAI:", errorBody);
-            throw new Error(errorBody.error.message || 'A API da OpenAI não conseguiu processar o pedido.');
+            console.error("Erro da API do Azure OpenAI:", errorBody);
+            throw new Error(errorBody.error?.message || 'A API do Azure OpenAI não conseguiu processar o pedido.');
         }
 
         const responseData = await apiResponse.json();
@@ -72,7 +70,7 @@ export default async function handler(req, res) {
         res.status(200).json({ answer: answer });
 
     } catch (error) {
-        console.error('Erro no endpoint de correção:', error);
+        console.error('Erro no endpoint:', error.message);
         res.status(500).json({ error: 'Falha ao obter a resposta da IA.' });
     }
 }
