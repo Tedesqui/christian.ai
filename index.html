@@ -220,7 +220,7 @@
                 if (recognitionActive) return;
                 recognitionActive = true;
                 micWrapper.classList.add('recording');
-                if (navigator.vibrate) navigator.vibrate(50);
+                if (navigator.vibrate) navigator.vibrate(100);
                 recognition.start();
                 appendMessage(translations[currentLang].listening, 'system');
             });
