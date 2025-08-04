@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<!-- O atributo lang será definido dinamicamente via JavaScript -->
+<html lang="pt">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>IA Cristã - Um Diálogo de Fé (Projeto de Jean Tedesqui)</title>
+    <!-- Título com um data-key para tradução -->
+    <title data-key="title">IA Cristã - Um Diálogo de Fé</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,7 +17,6 @@
             font-family: 'Inter', sans-serif;
             overflow: hidden;
         }
-
         #chat-window {
             background-image: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)), url('images/heaven.jpeg');
             background-size: cover;
@@ -23,15 +24,8 @@
             position: relative;
             z-index: 40;
         }
-
-        #user-input {
-            caret-color: #2563eb;
-        }
-
-        .hidden {
-            display: none;
-        }
-
+        #user-input { caret-color: #2563eb; }
+        .hidden { display: none; }
         .mic-wrapper {
             position: relative;
             display: inline-flex;
@@ -39,24 +33,6 @@
             justify-content: center;
             z-index: 50;
         }
-
-        .mic-wrapper::before,
-        .mic-wrapper::after {
-            content: '';
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 9999px;
-            background-color: rgba(34, 197, 94, 0.4);
-            opacity: 0;
-            z-index: -1;
-        }
-
-        /* REMOVIDO: animação ripple */
-
         .recording button {
             transform: scale(1.5);
             background-color: #22c55e !important;
@@ -67,17 +43,11 @@
 
 <body class="bg-slate-100 flex items-center justify-center min-h-screen">
     <div class="flex flex-col w-full max-w-3xl h-[85vh] bg-white rounded-2xl shadow-2xl m-4" style="transform: translateY(-10%)">
-        <header
-            class="bg-blue-600 text-white p-6 rounded-t-2xl shadow-md flex items-center space-x-4"
-        >
-            <img
-                src="images/jesus.jpg"
-                alt="Imagem de Jesus Cristo"
-                class="h-20 w-20 rounded-full object-cover border-2 border-white"
-            />
+        <header class="bg-blue-600 text-white p-6 rounded-t-2xl shadow-md flex items-center space-x-4">
+            <img src="images/jesus.jpg" alt="Imagem de Jesus Cristo" data-key="header_alt" class="h-20 w-20 rounded-full object-cover border-2 border-white" />
             <div>
-                <h1 class="text-2xl font-bold">IA Cristã</h1>
-                <p class="text-sm text-white">
+                <h1 class="text-2xl font-bold" data-key="header_title">IA Cristã</h1>
+                <p class="text-sm text-white" data-key="header_subtitle">
                     O seu companheiro para reflexão e estudo da Palavra.
                 </p>
             </div>
@@ -85,10 +55,8 @@
 
         <main id="chat-window" class="flex-1 p-6 overflow-y-auto">
             <div class="message-ai mb-4 flex">
-                <div
-                    class="bg-slate-200 text-slate-800 rounded-lg rounded-bl-none p-3 max-w-lg"
-                >
-                    <p class="text-sm">
+                <div class="bg-slate-200 text-slate-800 rounded-lg rounded-bl-none p-3 max-w-lg">
+                    <p class="text-sm" data-key="welcome_message">
                         Paz do Senhor! Eu sou o seu assistente virtual cristão. Estou aqui para
                         te ajudar a aprofundar-se na Palavra de Deus. Sinta-se à vontade para
                         perguntar sobre versículos, personagens bíblicos, ou para conversarmos
@@ -101,45 +69,16 @@
         <footer class="p-2 bg-white rounded-b-2xl">
             <div class="w-full">
                 <div class="flex items-center bg-slate-100 rounded-full p-1.5">
-                    <input
-                        type="text"
-                        id="user-input"
-                        placeholder="Fale ou escreva..."
-                        class="flex-1 bg-transparent border-none focus:ring-0 text-slate-800 placeholder-slate-400 px-4"
-                    />
-                    <button
-                        id="send-button"
-                        class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-colors duration-300 ml-2.5 hidden"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-6 w-6"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                        >
-                            <path
-                                d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"
-                            />
+                    <input type="text" id="user-input" placeholder="Fale ou escreva..." data-key="input_placeholder" class="flex-1 bg-transparent border-none focus:ring-0 text-slate-800 placeholder-slate-400 px-4" />
+                    <button id="send-button" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-colors duration-300 ml-2.5 hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
                         </svg>
                     </button>
-
                     <div class="mic-wrapper">
-                        <button
-                            id="mic-button"
-                            class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-colors duration-300 ml-2.5"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                id="mic-icon"
-                                class="h-6 w-6"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                            >
-                                <path
-                                    fill-rule="evenodd"
-                                    d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z"
-                                    clip-rule="evenodd"
-                                />
+                        <button id="mic-button" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-colors duration-300 ml-2.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="mic-icon" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd" />
                             </svg>
                         </button>
                     </div>
@@ -154,6 +93,71 @@
         const sendButton = document.getElementById('send-button');
         const micButton = document.getElementById('mic-button');
         const micWrapper = micButton.parentElement;
+        
+        // --- LÓGICA DE TRADUÇÃO ---
+        const translations = {
+            "en": {
+                "title": "Christian AI - A Dialogue of Faith",
+                "header_alt": "Image of Jesus Christ",
+                "header_title": "Christian AI",
+                "header_subtitle": "Your companion for reflection and study of the Word.",
+                "welcome_message": "Peace of the Lord! I am your Christian virtual assistant. I am here to help you delve deeper into the Word of God. Feel free to ask about verses, biblical characters, or to talk about life's challenges from a Christian perspective.",
+                "input_placeholder": "Speak or write...",
+                "listening": "🎙️ Listening...",
+                "typing_indicator": "Meditating on the Word",
+                "error_message": "Pardon me, my sheep, an error occurred while trying to connect with my spiritual circuits. Please try again later.",
+                "mic_denied": "Permission for the microphone was denied. Please enable it in your browser settings.",
+                "mic_error": "An error occurred with the voice recognition."
+            },
+            "es": {
+                "title": "IA Cristiana - Un Diálogo de Fe",
+                "header_alt": "Imagen de Jesucristo",
+                "header_title": "IA Cristiana",
+                "header_subtitle": "Tu compañero para la reflexión y el estudio de la Palabra.",
+                "welcome_message": "¡Paz del Señor! Soy tu asistente virtual cristiano. Estoy aquí para ayudarte a profundizar en la Palabra de Dios. No dudes en preguntar sobre versículos, personajes bíblicos, o para conversar sobre los desafíos de la vida desde la óptica cristiana.",
+                "input_placeholder": "Habla o escribe...",
+                "listening": "🎙️ Escuchando...",
+                "typing_indicator": "Meditando en la Palabra",
+                "error_message": "Perdón, mi oveja, ocurrió un error al intentar conectar con mis circuitos espirituales. Por favor, inténtalo de nuevo más tarde.",
+                "mic_denied": "Se denegó el permiso para el micrófono. Por favor, actívalo en la configuración de tu navegador.",
+                "mic_error": "Ocurrió un error con el reconocimiento de voz."
+            },
+            "pt": {
+                "title": "IA Cristã - Um Diálogo de Fé",
+                "header_alt": "Imagem de Jesus Cristo",
+                "header_title": "IA Cristã",
+                "header_subtitle": "O seu companheiro para reflexão e estudo da Palavra.",
+                "welcome_message": "Paz do Senhor! Eu sou o seu assistente virtual cristão. Estou aqui para te ajudar a aprofundar-se na Palavra de Deus. Sinta-se à vontade para perguntar sobre versículos, personagens bíblicos, ou para conversarmos sobre os desafios da vida sob a ótica cristã.",
+                "input_placeholder": "Fale ou escreva...",
+                "listening": "🎙️ Ouvindo...",
+                "typing_indicator": "A meditar na Palavra",
+                "error_message": "Perdão, minha ovelha, ocorreu um erro ao tentar conectar-me com os meus circuitos espirituais. Por favor, tente novamente mais tarde.",
+                "mic_denied": "Permissão para o microfone negada. Por favor, ative nas definições do seu navegador.",
+                "mic_error": "Ocorreu um erro no reconhecimento de voz."
+            }
+        };
+
+        let currentLang = 'pt'; // Padrão
+
+        function setLanguage(lang) {
+            const langCode = lang.split('-')[0]; // Pega 'pt' de 'pt-BR'
+            currentLang = translations[langCode] ? langCode : 'pt'; // Usa 'pt' se o idioma não for suportado
+            
+            document.documentElement.lang = currentLang;
+            document.querySelectorAll('[data-key]').forEach(element => {
+                const key = element.getAttribute('data-key');
+                if (translations[currentLang][key]) {
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = translations[currentLang][key];
+                    } else if (element.tagName === 'IMG') {
+                        element.alt = translations[currentLang][key];
+                    } else {
+                        element.textContent = translations[currentLang][key];
+                    }
+                }
+            });
+        }
+        // --- FIM DA LÓGICA DE TRADUÇÃO ---
 
         userInput.addEventListener('input', () => {
             if (userInput.value.trim() !== '') {
@@ -182,7 +186,8 @@
                 const response = await fetch(backendUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ question: message }),
+                    // Envia o idioma detectado para o backend
+                    body: JSON.stringify({ question: message, language: currentLang }),
                 });
 
                 if (!response.ok) {
@@ -197,10 +202,7 @@
             } catch (error) {
                 console.error('Erro ao comunicar com o backend:', error);
                 removeTypingIndicator();
-                appendMessage(
-                    'Perdão, minha ovelha, ocorreu um erro ao tentar conectar-me com os meus circuitos espirituais. Por favor, tente novamente mais tarde.',
-                    'ai'
-                );
+                appendMessage(translations[currentLang].error_message, 'ai');
             }
         }
 
@@ -211,7 +213,7 @@
 
         if (SpeechRecognition) {
             const recognition = new SpeechRecognition();
-            recognition.lang = 'pt-BR';
+            recognition.lang = currentLang === 'en' ? 'en-US' : currentLang === 'es' ? 'es-ES' : 'pt-BR';
             recognition.interimResults = false;
 
             micButton.addEventListener('mousedown', () => {
@@ -220,7 +222,7 @@
                 micWrapper.classList.add('recording');
                 if (navigator.vibrate) navigator.vibrate(50);
                 recognition.start();
-                appendMessage('🎙️ Ouvindo...', 'system');
+                appendMessage(translations[currentLang].listening, 'system');
             });
 
             micButton.addEventListener('mouseup', () => {
@@ -231,27 +233,19 @@
                 removeSystemMessage();
             });
 
-            micButton.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                micButton.dispatchEvent(new Event('mousedown'));
-            });
-            micButton.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                micButton.dispatchEvent(new Event('mouseup'));
-            });
+            micButton.addEventListener('touchstart', (e) => { e.preventDefault(); micButton.dispatchEvent(new Event('mousedown')); });
+            micButton.addEventListener('touchend', (e) => { e.preventDefault(); micButton.dispatchEvent(new Event('mouseup')); });
 
             recognition.onresult = (event) => {
                 const transcript = event.results[0][0].transcript;
-                if (transcript) {
-                    sendMessage(transcript);
-                }
+                if (transcript) sendMessage(transcript);
             };
 
             recognition.onerror = (event) => {
                 console.error('Erro no reconhecimento de voz:', event.error);
-                let errorMessage = 'Ocorreu um erro no reconhecimento de voz.';
+                let errorMessage = translations[currentLang].mic_error;
                 if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
-                    errorMessage = 'Permissão para o microfone negada. Por favor, ative nas definições do seu navegador.';
+                    errorMessage = translations[currentLang].mic_denied;
                 }
                 removeSystemMessage();
                 appendMessage(errorMessage, 'system-error');
@@ -263,7 +257,6 @@
             };
         } else {
             micWrapper.style.display = 'none';
-            console.warn('Reconhecimento de voz não é suportado neste navegador.');
         }
 
         function appendMessage(message, sender) {
@@ -279,10 +272,7 @@
             } else if (sender === 'system' || sender === 'system-error') {
                 messageWrapper.id = 'system-message';
                 messageWrapper.className = 'message-system mb-4 flex justify-center';
-                messageBubble.className =
-                    sender === 'system-error'
-                        ? 'bg-red-100 text-red-700 rounded-lg p-2 text-xs'
-                        : 'bg-yellow-100 text-yellow-700 rounded-lg p-2 text-xs';
+                messageBubble.className = sender === 'system-error' ? 'bg-red-100 text-red-700 rounded-lg p-2 text-xs' : 'bg-yellow-100 text-yellow-700 rounded-lg p-2 text-xs';
             }
 
             messageBubble.innerHTML = `<p class="text-sm">${message.replace(/\n/g, '<br>')}</p>`;
@@ -293,25 +283,21 @@
 
         function removeSystemMessage() {
             const systemMsg = document.getElementById('system-message');
-            if (systemMsg) {
-                systemMsg.remove();
-            }
+            if (systemMsg) systemMsg.remove();
         }
 
         function showTypingIndicator() {
-            const typingIndicator = `<div id="typing-indicator" class="message-ai mb-4 flex"><div class="bg-slate-200 text-slate-800 rounded-lg rounded-bl-none p-3 max-w-lg"><div class="flex items-center space-x-1"><span class="text-sm">A meditar na Palavra</span><div class="h-2 w-2 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div><div class="h-2 w-2 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div><div class="h-2 w-2 bg-slate-400 rounded-full animate-bounce"></div></div></div></div>`;
+            const typingIndicator = `<div id="typing-indicator" class="message-ai mb-4 flex"><div class="bg-slate-200 text-slate-800 rounded-lg rounded-bl-none p-3 max-w-lg"><div class="flex items-center space-x-1"><span class="text-sm">${translations[currentLang].typing_indicator}</span><div class="h-2 w-2 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div><div class="h-2 w-2 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div><div class="h-2 w-2 bg-slate-400 rounded-full animate-bounce"></div></div></div></div>`;
             chatWindow.insertAdjacentHTML('beforeend', typingIndicator);
             chatWindow.scrollTop = chatWindow.scrollHeight;
         }
 
         function removeTypingIndicator() {
             const indicator = document.getElementById('typing-indicator');
-            if (indicator) {
-                indicator.remove();
-            }
+            if (indicator) indicator.remove();
         }
 
-        userInput.addEventListener('keypress', function (e) {
+        userInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
                 sendMessage();
@@ -319,6 +305,8 @@
         });
 
         window.addEventListener('load', () => {
+            // Detecta o idioma do navegador e aplica a tradução
+            setLanguage(navigator.language || navigator.userLanguage);
             userInput.focus();
         });
     </script>
