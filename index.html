@@ -1,66 +1,28 @@
 <!DOCTYPE html>
-<!-- O atributo lang será definido dinamicamente via JavaScript -->
 <html lang="pt">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Título com um data-key para tradução -->
     <title data-key="title">IA Cristã - Um Diálogo de Fé</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
-    <!-- Script do Stripe.js -->
     <script src="https://js.stripe.com/v3/"></script>
 
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            overflow: hidden;
-        }
+        body { font-family: 'Inter', sans-serif; overflow: hidden; }
         #chat-window {
             background-image: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)), url('images/heaven.jpeg');
-            background-size: cover;
-            background-position: center;
-            position: relative;
-            z-index: 40;
+            background-size: cover; background-position: center; position: relative; z-index: 40;
         }
         #user-input { caret-color: #2563eb; }
         .hidden { display: none; }
-        .mic-wrapper {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 50;
-        }
-        .recording button {
-            transform: scale(1.5);
-            background-color: #22c55e !important;
-            transition: transform 0.2s ease, background-color 0.2s ease;
-        }
-        /* Estilos para o Modal de Pagamento */
-        #payment-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        #payment-modal {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            text-align: center;
-        }
+        .mic-wrapper { position: relative; display: inline-flex; align-items: center; justify-content: center; z-index: 50; }
+        .recording button { transform: scale(1.5); background-color: #22c55e !important; transition: transform 0.2s ease, background-color 0.2s ease; }
+        #payment-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); z-index: 100; display: flex; align-items: center; justify-content: center; }
+        #payment-modal { background-color: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); max-width: 400px; text-align: center; }
     </style>
 </head>
 
@@ -70,21 +32,14 @@
             <img src="images/jesus.jpg" alt="Imagem de Jesus Cristo" data-key="header_alt" class="h-20 w-20 rounded-full object-cover border-2 border-white" />
             <div>
                 <h1 class="text-2xl font-bold" data-key="header_title">IA Cristã</h1>
-                <p class="text-sm text-white" data-key="header_subtitle">
-                    O seu companheiro para reflexão e estudo da Palavra.
-                </p>
+                <p class="text-sm text-white" data-key="header_subtitle">O seu companheiro para reflexão e estudo da Palavra.</p>
             </div>
         </header>
 
         <main id="chat-window" class="flex-1 p-6 overflow-y-auto">
             <div class="message-ai mb-4 flex">
                 <div class="bg-slate-200 text-slate-800 rounded-lg rounded-bl-none p-3 max-w-lg">
-                    <p class="text-sm" data-key="welcome_message">
-                        Paz do Senhor! Eu sou o seu assistente virtual cristão. Estou aqui para
-                        te ajudar a aprofundar-se na Palavra de Deus. Sinta-se à vontade para
-                        perguntar sobre versículos, personagens bíblicos, ou para conversarmos
-                        sobre os desafios da vida sob a ótica cristã.
-                    </p>
+                    <p class="text-sm" data-key="welcome_message">Paz do Senhor! Eu sou o seu assistente virtual cristão. Estou aqui para te ajudar a aprofundar-se na Palavra de Deus. Sinta-se à vontade para perguntar sobre versículos, personagens bíblicos, ou para conversarmos sobre os desafios da vida sob a ótica cristã.</p>
                 </div>
             </div>
         </main>
@@ -94,15 +49,11 @@
                 <div class="flex items-center bg-slate-100 rounded-full p-1.5">
                     <input type="text" id="user-input" placeholder="Fale ou escreva..." data-key="input_placeholder" class="flex-1 bg-transparent border-none focus:ring-0 text-slate-800 placeholder-slate-400 px-4" />
                     <button id="send-button" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-colors duration-300 ml-2.5 hidden">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" /></svg>
                     </button>
                     <div class="mic-wrapper">
                         <button id="mic-button" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition-colors duration-300 ml-2.5">
-                            <svg xmlns="http://www.w3.org/2000/svg" id="mic-icon" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd" />
-                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" id="mic-icon" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd" /></svg>
                         </button>
                     </div>
                 </div>
@@ -110,17 +61,13 @@
         </footer>
     </div>
     
-    <!-- MODAL DE PAGAMENTO (inicialmente oculto) -->
     <div id="payment-modal-overlay" class="hidden">
         <div id="payment-modal">
             <h2 class="text-2xl font-bold text-slate-800 mb-2" data-key="payment_title">Acesso Expirado</h2>
             <p class="text-slate-600 mb-6" data-key="payment_description">Para continuar sua jornada de fé, é necessária uma pequena cobrança para a manutenção do nosso serviço. Assine o acesso semanal.</p>
-            <button id="subscribe-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300" data-key="payment_button">
-                Assinar por R$ 14,90 / semana
-            </button>
+            <button id="subscribe-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300" data-key="payment_button">Assinar por R$ 14,90 / semana</button>
         </div>
     </div>
-
 
     <script>
         const chatWindow = document.getElementById('chat-window');
@@ -131,10 +78,30 @@
         const paymentModalOverlay = document.getElementById('payment-modal-overlay');
         const subscribeButton = document.getElementById('subscribe-button');
 
-        // --- LÓGICA DE PAGAMENTO ---
         const FREE_MESSAGES_LIMIT = 3;
         let userMessageCount = parseInt(localStorage.getItem('userMessageCount') || '0');
         let accessExpiry = parseInt(localStorage.getItem('accessExpiry') || '0');
+
+        const translations = {
+            "pt": { "title": "IA Cristã - Um Diálogo de Fé", "header_alt": "Imagem de Jesus Cristo", "header_title": "IA Cristã", "header_subtitle": "O seu companheiro para reflexão e estudo da Palavra.", "welcome_message": "Paz do Senhor! Eu sou o seu assistente virtual cristão. Estou aqui para te ajudar a aprofundar-se na Palavra de Deus. Sinta-se à vontade para perguntar sobre versículos, personagens bíblicos, ou para conversarmos sobre os desafios da vida sob a ótica cristã.", "input_placeholder": "Fale ou escreva...", "listening": "🎙️ Ouvindo...", "typing_indicator": "A meditar na Palavra", "error_message": "Perdão, minha ovelha, ocorreu um erro. Por favor, tente novamente.", "mic_denied": "Permissão para o microfone negada. Ative nas definições do seu navegador.", "mic_error": "Ocorreu um erro no reconhecimento de voz.", "payment_title": "Acesso Expirado", "payment_description": "Para continuar sua jornada de fé, é necessária uma pequena cobrança para a manutenção do nosso serviço. Assine o acesso semanal.", "payment_button": "Assinar por R$ 14,90 / semana", "payment_required_placeholder": "Assinatura necessária para continuar...", "payment_loading": "Redirecionando...", "payment_success": "Obrigado pela sua oferta! Seu acesso foi restaurado por 7 dias." },
+            "en": { "title": "Christian AI - A Dialogue of Faith", "header_alt": "Image of Jesus Christ", "header_title": "Christian AI", "header_subtitle": "Your companion for reflection and study of the Word.", "welcome_message": "Peace of the Lord! I am your Christian virtual assistant. I am here to help you delve deeper into the Word of God. Feel free to ask about verses, biblical characters, or to talk about life's challenges from a Christian perspective.", "input_placeholder": "Speak or write...", "listening": "🎙️ Listening...", "typing_indicator": "Meditating on the Word", "error_message": "Pardon me, my sheep, an error occurred. Please try again.", "mic_denied": "Microphone permission denied. Please enable it in your browser settings.", "mic_error": "An error occurred with voice recognition.", "payment_title": "Access Expired", "payment_description": "To continue your journey of faith, a small charge is required to maintain our service. Subscribe for weekly access.", "payment_button": "Subscribe for $2.99 / week", "payment_required_placeholder": "Subscription required to continue...", "payment_loading": "Redirecting...", "payment_success": "Thank you for your offering! Your access has been restored for 7 days." },
+            "es": { "title": "IA Cristiana - Un Diálogo de Fe", "header_alt": "Imagen de Jesucristo", "header_title": "IA Cristiana", "header_subtitle": "Tu compañero para la reflexión y el estudio de la Palabra.", "welcome_message": "¡Paz del Señor! Soy tu asistente virtual cristiano. Estoy aquí para ayudarte a profundizar en la Palabra de Dios. No dudes en preguntar sobre versículos, personajes bíblicos, o para conversar sobre los desafíos de la vida desde la óptica cristiana.", "input_placeholder": "Habla o escribe...", "listening": "🎙️ Escuchando...", "typing_indicator": "Meditando en la Palabra", "error_message": "Perdón, mi oveja, ocurrió un error. Por favor, inténtalo de nuevo.", "mic_denied": "Se denegó el permiso para el micrófono. Por favor, actívalo en la configuración de tu navegador.", "mic_error": "Ocurrió un error con el reconocimiento de voz.", "payment_title": "Acceso Expirado", "payment_description": "Para continuar tu viaje de fe, se requiere un pequeño cobro para el mantenimiento de nuestro servicio. Suscríbete para el acceso semanal.", "payment_button": "Suscribir por $2.99 / semana", "payment_required_placeholder": "Se requiere suscripción para continuar...", "payment_loading": "Redirigiendo...", "payment_success": "¡Gracias por tu ofrenda! Tu acceso ha sido restaurado por 7 días." },
+            "it": { "title": "IA Cristiana - Un Dialogo di Fede", "header_alt": "Immagine di Gesù Cristo", "header_title": "IA Cristiana", "header_subtitle": "Il tuo compagno per la riflessione e lo studio della Parola.", "welcome_message": "Pace del Signore! Sono il tuo assistente virtuale cristiano. Sono qui per aiutarti ad approfondire la Parola di Dio. Sentiti libero di chiedere versetti, personaggi biblici o di parlare delle sfide della vita da una prospettiva cristiana.", "input_placeholder": "Parla o scrivi...", "listening": "🎙️ In ascolto...", "typing_indicator": "Meditando sulla Parola", "error_message": "Perdona, mia pecora, si è verificato un errore. Per favore, riprova.", "mic_denied": "Permesso per il microfono negato. Abilitalo nelle impostazioni del browser.", "mic_error": "Si è verificato un errore con il riconoscimento vocale.", "payment_title": "Accesso Scaduto", "payment_description": "Per continuare il tuo cammino di fede, è richiesto un piccolo contributo per mantenere il nostro servizio. Abbonati per l'accesso settimanale.", "payment_button": "Abbonati per 2,99 € / settimana", "payment_required_placeholder": "Abbonamento richiesto per continuare...", "payment_loading": "Reindirizzamento...", "payment_success": "Grazie per la tua offerta! Il tuo accesso è stato ripristinato per 7 giorni." },
+            "fr": { "title": "IA Chrétienne - Un Dialogue de Foi", "header_alt": "Image de Jésus-Christ", "header_title": "IA Chrétienne", "header_subtitle": "Votre compagnon pour la réflexion et l'étude de la Parole.", "welcome_message": "Paix du Seigneur ! Je suis votre assistant virtuel chrétien. Je suis ici pour vous aider à approfondir la Parole de Dieu. N'hésitez pas à poser des questions sur des versets, des personnages bibliques, ou à parler des défis de la vie d'un point de vue chrétien.", "input_placeholder": "Parlez ou écrivez...", "listening": "🎙️ Écoute...", "typing_indicator": "Méditation sur la Parole", "error_message": "Pardon, mon mouton, une erreur est survenue. Veuillez réessayer.", "mic_denied": "Permission du microphone refusée. Veuillez l'activer dans les paramètres de votre navigateur.", "mic_error": "Une erreur est survenue avec la reconnaissance vocale.", "payment_title": "Accès Expiré", "payment_description": "Pour continuer votre chemin de foi, une petite charge est requise pour maintenir notre service. Abonnez-vous pour un accès hebdomadaire.", "payment_button": "S'abonner pour 2,99 € / semaine", "payment_required_placeholder": "Abonnement requis pour continuer...", "payment_loading": "Redirection...", "payment_success": "Merci pour votre offrande ! Votre accès a été restauré pour 7 jours." },
+            "de": { "title": "Christliche KI - Ein Dialog des Glaubens", "header_alt": "Bild von Jesus Christus", "header_title": "Christliche KI", "header_subtitle": "Ihr Begleiter zur Besinnung und zum Studium des Wortes.", "welcome_message": "Friede des Herrn! Ich bin Ihr christlicher virtueller Assistent. Ich bin hier, um Ihnen zu helfen, tiefer in das Wort Gottes einzutauchen. Fragen Sie gerne nach Versen, biblischen Charakteren oder sprechen Sie über die Herausforderungen des Lebens aus christlicher Sicht.", "input_placeholder": "Sprechen oder schreiben Sie...", "listening": "🎙️ Höre zu...", "typing_indicator": "Meditiere über das Wort", "error_message": "Verzeihung, mein Schaf, ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.", "mic_denied": "Mikrofonberechtigung verweigert. Bitte aktivieren Sie sie in Ihren Browsereinstellungen.", "mic_error": "Ein Fehler bei der Spracherkennung ist aufgetreten.", "payment_title": "Zugang Abgelaufen", "payment_description": "Um Ihre Glaubensreise fortzusetzen, ist eine kleine Gebühr zur Aufrechterhaltung unseres Dienstes erforderlich. Abonnieren Sie den wöchentlichen Zugang.", "payment_button": "Abonnieren für 2,99 € / Woche", "payment_required_placeholder": "Abonnement zum Fortfahren erforderlich...", "payment_loading": "Weiterleitung...", "payment_success": "Danke für Ihr Opfer! Ihr Zugang wurde für 7 Tage wiederhergestellt." },
+            "ru": { "title": "Христианский ИИ - Диалог веры", "header_alt": "Изображение Иисуса Христа", "header_title": "Христианский ИИ", "header_subtitle": "Ваш спутник для размышлений и изучения Слова.", "welcome_message": "Мир Господень! Я ваш христианский виртуальный помощник. Я здесь, чтобы помочь вам глубже погрузиться в Слово Божье. Не стесняйтесь спрашивать о стихах, библейских персонажах или говорить о жизненных трудностях с христианской точки зрения.", "input_placeholder": "Говорите или пишите...", "listening": "🎙️ Слушаю...", "typing_indicator": "Размышляя над Словом", "error_message": "Прости, овца моя, произошла ошибка. Пожалуйста, попробуйте еще раз.", "mic_denied": "Доступ к микрофону запрещен. Пожалуйста, включите его в настройках вашего браузера.", "mic_error": "Произошла ошибка с распознаванием голоса.", "payment_title": "Доступ истек", "payment_description": "Чтобы продолжить ваш путь веры, требуется небольшая плата для поддержания нашего сервиса. Подпишитесь на еженедельный доступ.", "payment_button": "Подписаться за 2.99$ / неделя", "payment_required_placeholder": "Для продолжения требуется подписка...", "payment_loading": "Перенаправление...", "payment_success": "Спасибо за ваше пожертвование! Ваш доступ восстановлен на 7 дней." },
+            "ja": { "title": "キリスト教AI - 信仰の対話", "header_alt": "イエス・キリストの画像", "header_title": "キリスト教AI", "header_subtitle": "みことばの黙想と研究のためのあなたの伴侶。", "welcome_message": "主の平和！私はあなたのキリスト教バーチャルアシスタントです。神の言葉をより深く探求するお手伝いをします。聖句や聖書の登場人物について、またキリスト教の観点から人生の課題についてお気軽にお尋ねください。", "input_placeholder": "話すか書いてください...", "listening": "🎙️ 聞いています...", "typing_indicator": "みことばを黙想中", "error_message": "申し訳ありません、我が羊よ、エラーが発生しました。もう一度お試しください。", "mic_denied": "マイクの許可が拒否されました。ブラウザの設定で有効にしてください。", "mic_error": "音声認識でエラーが発生しました。", "payment_title": "アクセス期限切れ", "payment_description": "信仰の旅を続けるには、サービスの維持のために少額の料金が必要です。週間アクセスに登録してください。", "payment_button": "週2.99ドルで登録", "payment_required_placeholder": "続けるには登録が必要です...", "payment_loading": "リダイレクト中...", "payment_success": "ご献金ありがとうございます！アクセスが7日間復元されました。" },
+            "ko": { "title": "기독교 AI - 신앙의 대화", "header_alt": "예수 그리스도 이미지", "header_title": "기독교 AI", "header_subtitle": "말씀 묵상과 연구를 위한 당신의 동반자.", "welcome_message": "주님의 평화! 저는 당신의 기독교 가상 비서입니다. 하나님의 말씀을 더 깊이 파고드는 데 도움을 드리기 위해 여기 있습니다. 구절, 성경 인물에 대해 자유롭게 질문하거나 기독교적 관점에서 삶의 도전에 대해 이야기하십시오.", "input_placeholder": "말하거나 쓰세요...", "listening": "🎙️ 듣고 있습니다...", "typing_indicator": "말씀을 묵상 중", "error_message": "죄송합니다, 내 양이여, 오류가 발생했습니다. 다시 시도해 주세요.", "mic_denied": "마이크 권한이 거부되었습니다. 브라우저 설정에서 활성화해 주세요.", "mic_error": "음성 인식에 오류가 발생했습니다.", "payment_title": "액세스 만료", "payment_description": "신앙의 여정을 계속하려면 서비스 유지를 위해 소액의 요금이 필요합니다. 주간 액세스를 구독하세요.", "payment_button": "주당 2.99달러에 구독", "payment_required_placeholder": "계속하려면 구독이 필요합니다...", "payment_loading": "리디렉션 중...", "payment_success": "헌금에 감사드립니다! 7일 동안 액세스가 복원되었습니다." },
+            "zh": { "title": "基督教AI - 信仰的对话", "header_alt": "耶稣基督的形象", "header_title": "基督教AI", "header_subtitle": "您反思和学习圣言的伴侣。", "welcome_message": "主的平安！我是您的基督教虚拟助手。我在这里帮助您更深入地探究神的话语。欢迎随时询问经文、圣经人物，或从基督教的角度谈论生活中的挑战。", "input_placeholder": "说话或书写...", "listening": "🎙️ 正在聆听...", "typing_indicator": "默想圣言", "error_message": "对不起，我的羊，发生了错误。请再试一次。", "mic_denied": "麦克风权限被拒绝。请在您的浏览器设置中启用它。", "mic_error": "语音识别发生错误。", "payment_title": "访问已过期", "payment_description": "为了继续您的信仰之旅，需要支付少量费用来维护我们的服务。请订阅每周访问。", "payment_button": "每周2.99美元订阅", "payment_required_placeholder": "需要订阅才能继续...", "payment_loading": "正在重定向...", "payment_success": "感谢您的奉献！您的访问权限已恢复7天。" },
+            "hi": { "title": "ईसाई एआई - विश्वास का एक संवाद", "header_alt": "ईसा मसीह की छवि", "header_title": "ईसाई एआई", "header_subtitle": "वचन के चिंतन और अध्ययन के लिए आपका साथी।", "welcome_message": "प्रभु की शांति! मैं आपका ईसाई आभासी सहायक हूँ। मैं यहाँ परमेश्वर के वचन में गहराई से उतरने में आपकी मदद करने के लिए हूँ। छंदों, बाइबिल के पात्रों के बारे में पूछने के लिए स्वतंत्र महसूस करें, या ईसाई दृष्टिकोण से जीवन की चुनौतियों के बारे में बात करें।", "input_placeholder": "बोलें या लिखें...", "listening": "🎙️ सुन रहा हूँ...", "typing_indicator": "वचन पर मनन कर रहा है", "error_message": "मुझे क्षमा करें, मेरी भेड़, एक त्रुटि हुई। कृपया पुन: प्रयास करें।", "mic_denied": "माइक्रोफोन की अनुमति अस्वीकृत। कृपया इसे अपने ब्राउज़र सेटिंग्स में सक्षम करें।", "mic_error": "आवाज पहचान के साथ एक त्रुटि हुई।", "payment_title": "पहुंच समाप्त हो गई", "payment_description": "अपनी आस्था की यात्रा जारी रखने के लिए, हमारी सेवा को बनाए रखने के लिए एक छोटा सा शुल्क आवश्यक है। साप्ताहिक पहुंच के लिए सदस्यता लें।", "payment_button": "प्रति सप्ताह $2.99 में सदस्यता लें", "payment_required_placeholder": "जारी रखने के लिए सदस्यता आवश्यक है...", "payment_loading": "पुनर्निर्देशित कर रहा है...", "payment_success": "आपके प्रस्ताव के लिए धन्यवाद! आपकी पहुंच 7 दिनों के लिए बहाल कर दी गई है।" },
+            "fil": { "title": "Christian AI - Isang Diyalogo ng Pananampalataya", "header_alt": "Imahe ni Hesukristo", "header_title": "Christian AI", "header_subtitle": "Ang iyong kasama para sa pagninilay at pag-aaral ng Salita.", "welcome_message": "Kapayapaan ng Panginoon! Ako ang iyong Christian virtual assistant. Narito ako upang tulungan kang mas malalim na pag-aralan ang Salita ng Diyos. Huwag mag-atubiling magtanong tungkol sa mga talata, mga tauhan sa bibliya, o pag-usapan ang mga hamon sa buhay mula sa isang Kristiyanong pananaw.", "input_placeholder": "Magsalita o magsulat...", "listening": "🎙️ Nakikinig...", "typing_indicator": "Nagninilay sa Salita", "error_message": "Patawarin mo ako, aking tupa, nagkaroon ng error. Pakisubukang muli.", "mic_denied": "Tinanggihan ang pahintulot sa mikropono. Paki-enable ito sa mga setting ng iyong browser.", "mic_error": "Nagkaroon ng error sa voice recognition.", "payment_title": "Nag-expire na ang Access", "payment_description": "Upang ipagpatuloy ang iyong paglalakbay sa pananampalataya, kailangan ng maliit na bayad upang mapanatili ang aming serbisyo. Mag-subscribe para sa lingguhang access.", "payment_button": "Mag-subscribe sa halagang $2.99 / linggo", "payment_required_placeholder": "Kailangan ng subscription para magpatuloy...", "payment_loading": "Nagre-redirect...", "payment_success": "Salamat sa iyong alay! Naibalik na ang iyong access sa loob ng 7 araw." },
+            "sv": { "title": "Kristen AI - En dialog om tro", "header_alt": "Bild av Jesus Kristus", "header_title": "Kristen AI", "header_subtitle": "Din följeslagare för reflektion och studier av Ordet.", "welcome_message": "Herrens frid! Jag är din kristna virtuella assistent. Jag är här för att hjälpa dig att fördjupa dig i Guds Ord. Fråga gärna om verser, bibliska karaktärer eller prata om livets utmaningar ur ett kristet perspektiv.", "input_placeholder": "Tala eller skriv...", "listening": "🎙️ Lyssnar...", "typing_indicator": "Mediterar över Ordet", "error_message": "Förlåt mig, mitt får, ett fel inträffade. Försök igen.", "mic_denied": "Mikrofontillstånd nekat. Aktivera det i din webbläsares inställningar.", "mic_error": "Ett fel inträffade med röstigenkänning.", "payment_title": "Åtkomst har gått ut", "payment_description": "För att fortsätta din trosresa krävs en liten avgift för att upprätthålla vår tjänst. Prenumerera för veckovis åtkomst.", "payment_button": "Prenumerera för 2,99 $ / vecka", "payment_required_placeholder": "Prenumeration krävs för att fortsätta...", "payment_loading": "Omdirigerar...", "payment_success": "Tack för ditt offer! Din åtkomst har återställts i 7 dagar." },
+            "pl": { "title": "Chrześcijańska SI - Dialog wiary", "header_alt": "Obraz Jezusa Chrystusa", "header_title": "Chrześcijańska SI", "header_subtitle": "Twój towarzysz do refleksji i studiowania Słowa.", "welcome_message": "Pokój Pański! Jestem twoim chrześcijańskim wirtualnym asystentem. Jestem tutaj, aby pomóc ci zagłębić się w Słowo Boże. Zapraszam do zadawania pytań o wersety, postacie biblijne lub do rozmowy o wyzwaniach życiowych z chrześcijańskiej perspektywy.", "input_placeholder": "Mów lub pisz...", "listening": "🎙️ Słucham...", "typing_indicator": "Rozmyślanie nad Słowem", "error_message": "Wybacz mi, moja owco, wystąpił błąd. Spróbuj ponownie.", "mic_denied": "Odmowa dostępu do mikrofonu. Włącz go w ustawieniach przeglądarki.", "mic_error": "Wystąpił błąd rozpoznawania mowy.", "payment_title": "Dostęp wygasł", "payment_description": "Aby kontynuować swoją podróż wiary, wymagana jest niewielka opłata za utrzymanie naszej usługi. Subskrybuj, aby uzyskać tygodniowy dostęp.", "payment_button": "Subskrybuj za 2,99 $ / tydzień", "payment_required_placeholder": "Wymagana subskrypcja, aby kontynuować...", "payment_loading": "Przekierowywanie...", "payment_success": "Dziękujemy za twoją ofiarę! Twój dostęp został przywrócony na 7 dni." },
+            "bn": { "title": "খ্রিস্টান এআই - বিশ্বাসের একটি সংলাপ", "header_alt": "যীশু খ্রিস্টের ছবি", "header_title": "খ্রিস্টান এআই", "header_subtitle": "শব্দের প্রতিফলন এবং অধ্যয়নের জন্য আপনার সঙ্গী।", "welcome_message": "প্রভুর শান্তি! আমি আপনার খ্রিস্টান ভার্চুয়াল সহকারী। আমি এখানে ঈশ্বরের বাক্যে আরও গভীরে যেতে আপনাকে সাহায্য করার জন্য আছি। আয়াত, বাইবেলের চরিত্র সম্পর্কে জিজ্ঞাসা করতে বা খ্রিস্টান দৃষ্টিকোণ থেকে জীবনের চ্যালেঞ্জ সম্পর্কে কথা বলতে দ্বিধা বোধ করুন।", "input_placeholder": "বলুন বা লিখুন...", "listening": "🎙️ শুনছি...", "typing_indicator": "শব্দ নিয়ে ধ্যান করা", "error_message": "আমাকে ক্ষমা করুন, আমার মেষ, একটি ত্রুটি ঘটেছে। আবার চেষ্টা করুন.", "mic_denied": "মাইক্রোফোনের অনুমতি अस्वीकार করা হয়েছে। আপনার ব্রাউজার সেটিংসে এটি সক্ষম করুন।", "mic_error": "ভয়েস রিকগনিশনে একটি ত্রুটি ঘটেছে।", "payment_title": "অ্যাক্সেসের মেয়াদ শেষ", "payment_description": "আপনার বিশ্বাসের যাত্রা চালিয়ে যেতে, আমাদের পরিষেবা বজায় রাখার জন্য একটি ছোট চার্জ প্রয়োজন। সাপ্তাহিক অ্যাক্সেসের জন্য সাবস্ক্রাইব করুন।", "payment_button": "প্রতি সপ্তাহে $2.99 এর জন্য সাবস্ক্রাইব করুন", "payment_required_placeholder": "চালিয়ে যেতে সাবস্ক্রিপশন প্রয়োজন...", "payment_loading": "পুনর্নির্দেশ করা হচ্ছে...", "payment_success": "আপনার প্রস্তাবের জন্য ধন্যবাদ! আপনার অ্যাক্সেস 7 দিনের জন্য পুনরুদ্ধার করা হয়েছে।" },
+            "ar": { "title": "الذكاء الاصطناعي المسيحي - حوار الإيمان", "header_alt": "صورة يسوع المسيح", "header_title": "الذكاء الاصطناعي المسيحي", "header_subtitle": "رفيقك للتأمل ودراسة الكلمة.", "welcome_message": "سلام الرب! أنا مساعدك الافتراضي المسيحي. أنا هنا لمساعدتك على التعمق في كلمة الله. لا تتردد في السؤال عن الآيات والشخصيات الكتابية أو التحدث عن تحديات الحياة من منظور مسيحي.", "input_placeholder": "تحدث أو اكتب...", "listening": "🎙️ أستمع...", "typing_indicator": "أتأمل في الكلمة", "error_message": "سامحني يا خرافي، حدث خطأ. يرجى المحاولة مرة أخرى.", "mic_denied": "تم رفض إذن الميكروفون. يرجى تمكينه في إعدادات المتصفح.", "mic_error": "حدث خطأ في التعرف على الصوت.", "payment_title": "انتهت صلاحية الوصول", "payment_description": "لمواصلة رحلتك الإيمانية، يلزم دفع رسوم بسيطة للحفاظ على خدمتنا. اشترك للوصول الأسبوعي.", "payment_button": "اشترك مقابل 2.99 دولارًا أمريكيًا في الأسبوع", "payment_required_placeholder": "الاشتراك مطلوب للمتابعة...", "payment_loading": "إعادة توجيه...", "payment_success": "شكرًا لك على عرضك! تم استعادة وصولك لمدة 7 أيام." }
+        };
+
+        let currentLang = 'pt';
 
         function hasActiveAccess() {
             return Date.now() < accessExpiry;
@@ -176,71 +143,8 @@
             }
         });
 
-        // --- LÓGICA DE TRADUÇÃO ---
-        const translations = {
-            "en": {
-                "title": "Christian AI - A Dialogue of Faith",
-                "header_alt": "Image of Jesus Christ",
-                "header_title": "Christian AI",
-                "header_subtitle": "Your companion for reflection and study of the Word.",
-                "welcome_message": "Peace of the Lord! I am your Christian virtual assistant. I am here to help you delve deeper into the Word of God. Feel free to ask about verses, biblical characters, or to talk about life's challenges from a Christian perspective.",
-                "input_placeholder": "Speak or write...",
-                "listening": "🎙️ Listening...",
-                "typing_indicator": "Meditating on the Word",
-                "error_message": "Pardon me, my sheep, an error occurred while trying to connect with my spiritual circuits. Please try again later.",
-                "mic_denied": "Permission for the microphone was denied. Please enable it in your browser settings.",
-                "mic_error": "An error occurred with the voice recognition.",
-                "payment_title": "Access Expired",
-                "payment_description": "To continue your journey of faith, a small tithe is required for the maintenance of our service. Subscribe for weekly access.",
-                "payment_button": "Subscribe for $2.99 / week",
-                "payment_required_placeholder": "Subscription required to continue...",
-                "payment_loading": "Redirecting to payment...",
-                "payment_success": "Thank you for your offering! Your access has been restored for 7 days. May God bless you."
-            },
-            "es": {
-                "title": "IA Cristiana - Un Diálogo de Fe",
-                "header_alt": "Imagen de Jesucristo",
-                "header_title": "IA Cristiana",
-                "header_subtitle": "Tu compañero para la reflexión y el estudio de la Palabra.",
-                "welcome_message": "¡Paz del Señor! Soy tu asistente virtual cristiano. Estoy aquí para ayudarte a profundizar en la Palabra de Dios. No dudes en preguntar sobre versículos, personajes bíblicos, o para conversar sobre los desafíos de la vida desde la óptica cristiana.",
-                "input_placeholder": "Habla o escribe...",
-                "listening": "🎙️ Escuchando...",
-                "typing_indicator": "Meditando en la Palabra",
-                "error_message": "Perdón, mi oveja, ocurrió un error al intentar conectar con mis circuitos espirituales. Por favor, inténtalo de nuevo más tarde.",
-                "mic_denied": "Se denegó el permiso para el micrófono. Por favor, actívalo en la configuración de tu navegador.",
-                "mic_error": "Ocurrió un error con el reconocimiento de voz.",
-                "payment_title": "Acceso Expirado",
-                "payment_description": "Para continuar tu viaje de fe, se requiere un pequeño diezmo para el mantenimiento de nuestro servicio. Suscríbete para el acceso semanal.",
-                "payment_button": "Suscribir por $2.99 / semana",
-                "payment_required_placeholder": "Se requiere suscripción para continuar...",
-                "payment_loading": "Redirigiendo al pago...",
-                "payment_success": "¡Gracias por tu ofrenda! Tu acceso ha sido restaurado por 7 días. ¡Que Dios te bendiga."
-            },
-            "pt": {
-                "title": "IA Cristã - Um Diálogo de Fé",
-                "header_alt": "Imagem de Jesus Cristo",
-                "header_title": "IA Cristã",
-                "header_subtitle": "O seu companheiro para reflexão e estudo da Palavra.",
-                "welcome_message": "Paz do Senhor! Eu sou o seu assistente virtual cristão. Estou aqui para te ajudar a aprofundar-se na Palavra de Deus. Sinta-se à vontade para perguntar sobre versículos, personagens bíblicos, ou para conversarmos sobre os desafios da vida sob a ótica cristã.",
-                "input_placeholder": "Fale ou escreva...",
-                "listening": "🎙️ Ouvindo...",
-                "typing_indicator": "A meditar na Palavra",
-                "error_message": "Perdão, minha ovelha, ocorreu um erro ao tentar conectar-me com os meus circuitos espirituais. Por favor, tente novamente mais tarde.",
-                "mic_denied": "Permissão para o microfone negada. Por favor, ative nas definições do seu navegador.",
-                "mic_error": "Ocorreu um erro no reconhecimento de voz.",
-                "payment_title": "Acesso Expirado",
-                "payment_description": "Para continuar sua jornada de fé, é necessária uma pequena cobrança para a manutenção do nosso serviço. Assine o acesso semanal.",
-                "payment_button": "Assinar por R$ 14,90 / semana",
-                "payment_required_placeholder": "Assinatura necessária para continuar...",
-                "payment_loading": "Redirecionando para o pagamento...",
-                "payment_success": "Obrigado pela sua oferta! Seu acesso foi restaurado por 7 dias. Que Deus te abençoe."
-            }
-        };
-
-        let currentLang = 'pt'; // Padrão
-
         function setLanguage(lang) {
-            const langCode = lang.split('-')[0];
+            const langCode = (lang || 'pt').split('-')[0];
             currentLang = translations[langCode] ? langCode : 'pt';
             
             document.documentElement.lang = currentLang;
@@ -256,7 +160,7 @@
                     }
                 }
             });
-            checkAccess(); // Verifica o acesso após definir o idioma
+            checkAccess();
         }
 
         userInput.addEventListener('input', () => {
@@ -311,7 +215,7 @@
                 removeTypingIndicator();
                 appendMessage(translations[currentLang].error_message, 'ai');
             } finally {
-                checkAccess(); // Verifica o acesso novamente após a resposta
+                checkAccess();
             }
         }
 
@@ -322,12 +226,12 @@
 
         if (SpeechRecognition) {
             const recognition = new SpeechRecognition();
-            recognition.lang = currentLang === 'en' ? 'en-US' : currentLang === 'es' ? 'es-ES' : 'pt-BR';
             recognition.interimResults = false;
 
             micButton.addEventListener('mousedown', () => {
                 if (userInput.disabled) return;
                 if (recognitionActive) return;
+                recognition.lang = currentLang === 'en' ? 'en-US' : `${currentLang}-${currentLang.toUpperCase()}`;
                 recognitionActive = true;
                 micWrapper.classList.add('recording');
                 if (navigator.vibrate) navigator.vibrate(100);
@@ -403,7 +307,7 @@
         }
 
         function removeTypingIndicator() {
-            const indicator = document.getElementById('typing-indicator');
+            const indicator = document.getElementById('indicator-de-escrita');
             if (indicator) indicator.remove();
         }
 
@@ -414,21 +318,18 @@
             }
         });
         
-        // --- INICIALIZAÇÃO DA PÁGINA ---
         window.addEventListener('load', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const sessionId = urlParams.get('session_id');
 
-            // Se retornou do Stripe com sucesso
             if (sessionId) {
                 const sevenDays = 7 * 24 * 60 * 60 * 1000;
                 const newExpiry = Date.now() + sevenDays;
                 localStorage.setItem('accessExpiry', newExpiry.toString());
-                localStorage.removeItem('userMessageCount'); // Reseta a contagem de mensagens
+                localStorage.removeItem('userMessageCount');
                 accessExpiry = newExpiry;
                 userMessageCount = 0;
                 
-                // Limpa a URL e mostra mensagem de sucesso
                 window.history.replaceState(null, '', window.location.pathname);
                 appendMessage(translations[currentLang].payment_success, 'system');
             }
