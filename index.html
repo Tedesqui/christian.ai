@@ -11,6 +11,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+    <!-- Script do Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
 
     <style>
         body {
@@ -37,6 +39,27 @@
             transform: scale(1.5);
             background-color: #22c55e !important;
             transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+        /* Estilos para o Modal de Pagamento */
+        #payment-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #payment-modal {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            text-align: center;
         }
     </style>
 </head>
@@ -86,6 +109,18 @@
             </div>
         </footer>
     </div>
+    
+    <!-- MODAL DE PAGAMENTO (inicialmente oculto) -->
+    <div id="payment-modal-overlay" class="hidden">
+        <div id="payment-modal">
+            <h2 class="text-2xl font-bold text-slate-800 mb-2" data-key="payment_title">Acesso Expirado</h2>
+            <p class="text-slate-600 mb-6" data-key="payment_description">Para continuar sua jornada de fé, é necessária uma pequena cobrança para a manutenção do nosso serviço. Assine o acesso semanal.</p>
+            <button id="subscribe-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300" data-key="payment_button">
+                Assinar por R$ 14,90 / semana
+            </button>
+        </div>
+    </div>
+
 
     <script>
         const chatWindow = document.getElementById('chat-window');
@@ -93,7 +128,54 @@
         const sendButton = document.getElementById('send-button');
         const micButton = document.getElementById('mic-button');
         const micWrapper = micButton.parentElement;
+        const paymentModalOverlay = document.getElementById('payment-modal-overlay');
+        const subscribeButton = document.getElementById('subscribe-button');
+
+        // --- LÓGICA DE PAGAMENTO ---
+        const FREE_MESSAGES_LIMIT = 3;
+        let userMessageCount = parseInt(localStorage.getItem('userMessageCount') || '0');
+        let accessExpiry = parseInt(localStorage.getItem('accessExpiry') || '0');
+
+        function hasActiveAccess() {
+            return Date.now() < accessExpiry;
+        }
+
+        function checkAccess() {
+            if (hasActiveAccess() || userMessageCount < FREE_MESSAGES_LIMIT) {
+                userInput.disabled = false;
+                paymentModalOverlay.classList.add('hidden');
+                userInput.placeholder = translations[currentLang].input_placeholder;
+            } else {
+                userInput.disabled = true;
+                userInput.placeholder = translations[currentLang].payment_required_placeholder;
+                paymentModalOverlay.classList.remove('hidden');
+            }
+        }
         
+        subscribeButton.addEventListener('click', async () => {
+             subscribeButton.disabled = true;
+             subscribeButton.textContent = translations[currentLang].payment_loading;
+
+            try {
+                const response = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ langCode: currentLang }), 
+                });
+
+                if (!response.ok) throw new Error('Failed to create checkout session');
+                
+                const { checkoutUrl } = await response.json();
+                window.location.href = checkoutUrl;
+
+            } catch (error) {
+                console.error("Stripe Error:", error);
+                subscribeButton.disabled = false;
+                subscribeButton.textContent = translations[currentLang].payment_button;
+                alert('Ocorreu um erro ao iniciar o pagamento. Tente novamente.');
+            }
+        });
+
         // --- LÓGICA DE TRADUÇÃO ---
         const translations = {
             "en": {
@@ -107,7 +189,13 @@
                 "typing_indicator": "Meditating on the Word",
                 "error_message": "Pardon me, my sheep, an error occurred while trying to connect with my spiritual circuits. Please try again later.",
                 "mic_denied": "Permission for the microphone was denied. Please enable it in your browser settings.",
-                "mic_error": "An error occurred with the voice recognition."
+                "mic_error": "An error occurred with the voice recognition.",
+                "payment_title": "Access Expired",
+                "payment_description": "To continue your journey of faith, a small tithe is required for the maintenance of our service. Subscribe for weekly access.",
+                "payment_button": "Subscribe for $2.99 / week",
+                "payment_required_placeholder": "Subscription required to continue...",
+                "payment_loading": "Redirecting to payment...",
+                "payment_success": "Thank you for your offering! Your access has been restored for 7 days. May God bless you."
             },
             "es": {
                 "title": "IA Cristiana - Un Diálogo de Fe",
@@ -120,7 +208,13 @@
                 "typing_indicator": "Meditando en la Palabra",
                 "error_message": "Perdón, mi oveja, ocurrió un error al intentar conectar con mis circuitos espirituales. Por favor, inténtalo de nuevo más tarde.",
                 "mic_denied": "Se denegó el permiso para el micrófono. Por favor, actívalo en la configuración de tu navegador.",
-                "mic_error": "Ocurrió un error con el reconocimiento de voz."
+                "mic_error": "Ocurrió un error con el reconocimiento de voz.",
+                "payment_title": "Acceso Expirado",
+                "payment_description": "Para continuar tu viaje de fe, se requiere un pequeño diezmo para el mantenimiento de nuestro servicio. Suscríbete para el acceso semanal.",
+                "payment_button": "Suscribir por $2.99 / semana",
+                "payment_required_placeholder": "Se requiere suscripción para continuar...",
+                "payment_loading": "Redirigiendo al pago...",
+                "payment_success": "¡Gracias por tu ofrenda! Tu acceso ha sido restaurado por 7 días. ¡Que Dios te bendiga."
             },
             "pt": {
                 "title": "IA Cristã - Um Diálogo de Fé",
@@ -133,15 +227,21 @@
                 "typing_indicator": "A meditar na Palavra",
                 "error_message": "Perdão, minha ovelha, ocorreu um erro ao tentar conectar-me com os meus circuitos espirituais. Por favor, tente novamente mais tarde.",
                 "mic_denied": "Permissão para o microfone negada. Por favor, ative nas definições do seu navegador.",
-                "mic_error": "Ocorreu um erro no reconhecimento de voz."
+                "mic_error": "Ocorreu um erro no reconhecimento de voz.",
+                "payment_title": "Acesso Expirado",
+                "payment_description": "Para continuar sua jornada de fé, é necessária uma pequena cobrança para a manutenção do nosso serviço. Assine o acesso semanal.",
+                "payment_button": "Assinar por R$ 14,90 / semana",
+                "payment_required_placeholder": "Assinatura necessária para continuar...",
+                "payment_loading": "Redirecionando para o pagamento...",
+                "payment_success": "Obrigado pela sua oferta! Seu acesso foi restaurado por 7 dias. Que Deus te abençoe."
             }
         };
 
         let currentLang = 'pt'; // Padrão
 
         function setLanguage(lang) {
-            const langCode = lang.split('-')[0]; // Pega 'pt' de 'pt-BR'
-            currentLang = translations[langCode] ? langCode : 'pt'; // Usa 'pt' se o idioma não for suportado
+            const langCode = lang.split('-')[0];
+            currentLang = translations[langCode] ? langCode : 'pt';
             
             document.documentElement.lang = currentLang;
             document.querySelectorAll('[data-key]').forEach(element => {
@@ -156,8 +256,8 @@
                     }
                 }
             });
+            checkAccess(); // Verifica o acesso após definir o idioma
         }
-        // --- FIM DA LÓGICA DE TRADUÇÃO ---
 
         userInput.addEventListener('input', () => {
             if (userInput.value.trim() !== '') {
@@ -170,8 +270,16 @@
         });
 
         async function sendMessage(directMessage = null) {
+            checkAccess();
+            if (userInput.disabled) return;
+
             const message = directMessage || userInput.value.trim();
             if (!message) return;
+            
+            if (!hasActiveAccess()) {
+                userMessageCount++;
+                localStorage.setItem('userMessageCount', userMessageCount.toString());
+            }
 
             appendMessage(message, 'user');
             if (directMessage === null) {
@@ -186,7 +294,6 @@
                 const response = await fetch(backendUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    // Envia o idioma detectado para o backend
                     body: JSON.stringify({ question: message, language: currentLang }),
                 });
 
@@ -203,6 +310,8 @@
                 console.error('Erro ao comunicar com o backend:', error);
                 removeTypingIndicator();
                 appendMessage(translations[currentLang].error_message, 'ai');
+            } finally {
+                checkAccess(); // Verifica o acesso novamente após a resposta
             }
         }
 
@@ -217,6 +326,7 @@
             recognition.interimResults = false;
 
             micButton.addEventListener('mousedown', () => {
+                if (userInput.disabled) return;
                 if (recognitionActive) return;
                 recognitionActive = true;
                 micWrapper.classList.add('recording');
@@ -303,9 +413,26 @@
                 sendMessage();
             }
         });
-
+        
+        // --- INICIALIZAÇÃO DA PÁGINA ---
         window.addEventListener('load', () => {
-            // Detecta o idioma do navegador e aplica a tradução
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionId = urlParams.get('session_id');
+
+            // Se retornou do Stripe com sucesso
+            if (sessionId) {
+                const sevenDays = 7 * 24 * 60 * 60 * 1000;
+                const newExpiry = Date.now() + sevenDays;
+                localStorage.setItem('accessExpiry', newExpiry.toString());
+                localStorage.removeItem('userMessageCount'); // Reseta a contagem de mensagens
+                accessExpiry = newExpiry;
+                userMessageCount = 0;
+                
+                // Limpa a URL e mostra mensagem de sucesso
+                window.history.replaceState(null, '', window.location.pathname);
+                appendMessage(translations[currentLang].payment_success, 'system');
+            }
+            
             setLanguage(navigator.language || navigator.userLanguage);
             userInput.focus();
         });
