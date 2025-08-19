@@ -1,11 +1,9 @@
 export default async function handler(req, res) {
-    // Apenas permite pedidos POST
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Método não permitido' });
     }
 
     try {
-        // MODIFICAÇÃO: Recebe 'language' do frontend
         const { question, language } = req.body;
         if (!question) {
             return res.status(400).json({ error: 'Nenhuma pergunta fornecida.' });
@@ -14,14 +12,25 @@ export default async function handler(req, res) {
         const apiKey = process.env.OPENAI_API_KEY;
         const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
-        // MODIFICAÇÃO: Mapeamento de idiomas para instruções claras para a IA
         const languageInstructions = {
+            'pt': 'Você deve responder em Português do Brasil.',
             'en': 'You must respond in English.',
             'es': 'Debes responder en Español.',
-            'pt': 'Você deve responder em Português do Brasil.'
+            'it': 'Devi rispondere in Italiano.',
+            'fr': 'Vous devez répondre en Français.',
+            'de': 'Du musst auf Deutsch antworten.',
+            'ru': 'Вы должны отвечать на русском языке.',
+            'ja': '日本語で応答しなければなりません。',
+            'ko': '한국어로 응답해야 합니다.',
+            'zh': '你必须用中文回答。',
+            'hi': 'आपको हिंदी में जवाब देना होगा।',
+            'fil': 'Dapat kang tumugon sa Filipino.',
+            'sv': 'Du måste svara på svenska.',
+            'pl': 'Musisz odpowiadać po polsku.',
+            'bn': 'আপনাকে বাংলা ভাষায় উত্তর দিতে হবে।',
+            'ar': 'يجب أن ترد باللغة العربية.'
         };
         
-        // Define o idioma padrão como português se o idioma recebido não for suportado
         const langInstruction = languageInstructions[language] || languageInstructions['pt'];
 
         const systemPrompt = `
@@ -63,7 +72,6 @@ export default async function handler(req, res) {
 
         if (!apiResponse.ok) {
             const errorBody = await apiResponse.json();
-            console.error("Erro da API da OpenAI:", errorBody);
             throw new Error(errorBody.error.message || 'A API da OpenAI não conseguiu processar o pedido.');
         }
 
